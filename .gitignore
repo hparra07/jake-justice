@@ -1,0 +1,13 @@
+# Claude config
+.claude/
+
+# Large files
+*.mp4
+*.psd
+*.pptx
+*.ai
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
