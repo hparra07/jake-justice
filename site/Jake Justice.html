@@ -746,18 +746,17 @@
       .scenario-result { padding: 20px 20px; }
 
       /* ── AUTHORITY / ABOUT ── */
-      .authority-inner { grid-template-columns: 1fr; padding: 64px 24px; gap: 40px; justify-items: center; }
-      .authority-photo-wrap { height: 420px; max-width: 480px; margin: 0 auto; width: 100%; }
+      .authority-inner { grid-template-columns: 1fr; padding: 64px 20px; gap: 40px; justify-items: center; margin: 0 auto; }
+      .authority-photo-wrap { height: 380px; max-width: 100%; margin: 0 auto; width: 100%; }
       .authority-inner > div { text-align: center; width: 100%; }
-      .authority-inner .section-h2 { text-align: center; font-size: clamp(13px, 3.8vw, 24px); white-space: nowrap; }
+      .authority-inner .section-h2 { text-align: center; font-size: clamp(18px, 5vw, 30px); white-space: normal; }
       .authority-inner p { text-align: center; }
-      .trust-badges { align-items: center; }
-      .trust-badge { width: 100%; justify-content: center; }
+      .trust-badges { align-items: center; width: 100%; }
+      .trust-badge { width: 100%; justify-content: center; flex-direction: column; text-align: center; align-items: center; }
       .stats-row { flex-wrap: nowrap; }
       .stat-item { flex: 1; padding: 14px 8px; }
       .stat-num { font-size: 28px; }
       .stat-label { font-size: 10px; }
-      .trust-badge { flex-direction: column; text-align: center; align-items: center; }
 
       /* ── CTA ── */
       .cta-inner { padding: 40px 24px; }
@@ -773,7 +772,7 @@
       .footer-bottom { flex-direction: column; align-items: center; text-align: center; gap: 16px; }
     }
     @media (max-width: 900px) {
-      .authority-inner { grid-template-columns: 1fr; padding: 60px 10px; gap: 40px; justify-items: center; max-width: 600px; }
+      .authority-inner { grid-template-columns: 1fr; padding: 60px 20px; gap: 40px; justify-items: center; max-width: 600px; margin: 0 auto; }
       .authority-photo-wrap { height: 370px; max-width: 350px; margin: 0 auto; }
     }
     @media (max-height: 820px) {
