@@ -169,13 +169,13 @@
       width: clamp(190px, 22vw, 300px);
       left: 30%; bottom: 4%;
     }
-    /* Text column — fixed right side */
+    /* Text column — fixed, shifted toward center */
     .about-jj-text-col {
       position: absolute;
-      right: 5%;
+      right: 10%;
       top: 50%;
       transform: translateY(-50%);
-      width: 38%;
+      width: 40%;
       max-width: 440px;
       z-index: 4;
       display: flex;
@@ -191,15 +191,17 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       padding: 12px 32px;
-      margin-bottom: 32px;
+      margin-bottom: 28px;
       align-self: flex-start;
     }
+    /* Matches page's section-h2 style */
     .about-jj-lead {
       font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(20px, 2.2vw, 34px);
-      font-weight: 700;
+      font-size: clamp(28px, 3vw, 48px);
+      font-weight: 400;
       color: var(--blue);
-      line-height: 1.15;
+      line-height: 1.0;
+      letter-spacing: 0.02em;
       margin-bottom: 28px;
     }
     .about-jj-body {
@@ -821,10 +823,10 @@
       .hero-badge { left: calc(50% - 134px); top: 30px; font-size: 11px; padding: 10px 16px; }
 
       /* ── ABOUT JJ ── */
-      #about-jj { height: auto; padding: 64px 24px; display: flex; flex-direction: column; align-items: flex-start; gap: 36px; }
+      #about-jj { height: auto; padding: 64px 24px; display: flex; flex-direction: column; align-items: center; gap: 36px; }
       .about-jj-bg-logo-wrap { display: none; }
-      .about-jj-img { position: relative; width: 200px; max-width: 200px; height: auto; top: auto; left: auto; right: auto; bottom: auto; transform: none; display: none; }
-      .about-jj-img[data-step="0"] { display: block; margin: 0 auto; }
+      .about-jj-img[data-step="0"] { position: relative; display: block; width: 200px; left: auto; top: auto; transform: none; margin: 0 auto; }
+      .about-jj-img[data-step="1"], .about-jj-img[data-step="2"], .about-jj-img[data-step="3"] { display: none; }
       .about-jj-text-col { position: relative; right: auto; top: auto; transform: none; width: 100%; max-width: 100%; }
 
       /* ── DO & DON'T ── */
@@ -2410,83 +2412,66 @@ ctaTl
   const jjImgs = gsap.utils.toArray('.about-jj-img');
   if (!jjImgs.length) return;
 
-  let currentJJIdx = 0;
-  let lastJJStep   = 0;
-
-  // Give each image its own perspective for the flip
+  // All images + text hidden at start (GSAP controls reveal)
   gsap.set(jjImgs, { transformPerspective: 1000, opacity: 0 });
+  gsap.set('.about-jj-text-col', { opacity: 0 });
 
-  // ── Minimal flip: subtle rotateY + fade ──
-  function flipJJ(newIdx) {
-    if (newIdx === currentJJIdx) return;
-    const out = jjImgs[currentJJIdx];
-    const inn = jjImgs[newIdx];
-    const dir = newIdx > currentJJIdx ? 1 : -1;
-    gsap.to(out, { opacity:0, rotateY:-18*dir, duration:0.3, ease:'power2.in' });
-    gsap.fromTo(inn,
-      { opacity:0, rotateY:18*dir },
-      { opacity:1, rotateY:0, duration:0.35, ease:'power2.out', delay:0.25 }
+  // Reveal an image with a minimal flip-in
+  function revealJJ(img) {
+    gsap.fromTo(img,
+      { opacity: 0, rotateY: 14 },
+      { opacity: 1, rotateY: 0, duration: 0.45, ease: 'power2.out' }
     );
-    currentJJIdx = newIdx;
   }
 
   if (window.innerWidth > 660) {
-    // ── Logo: register transform with GSAP then scrub left→right ──
     const bgImg = document.querySelector('.about-jj-bg-logo-wrap img');
     if (bgImg) {
-      gsap.set(bgImg, { xPercent:-50, yPercent:-50, x:'-40vw' });
-      gsap.to(bgImg, {
-        x: '40vw', ease:'none',
-        scrollTrigger:{
-          trigger:'#about-jj', start:'top top', end:'+=400vh', scrub:3
-        }
-      });
+      gsap.set(bgImg, { xPercent: -50, yPercent: -50, x: '-40vw' });
     }
 
-    // ── Pin section + show images at different positions on scroll ──
+    let shown = [false, false, false, false];
+
+    // ── Pin for 300vh (avatar already shown, 3 more images × 100vh) ──
     ScrollTrigger.create({
       trigger: '#about-jj',
       start: 'top top',
-      end: '+=400vh',
+      end: '+=300vh',
       pin: true,
       anticipatePin: 1,
-    });
-
-    // ── Entry: text fades in, first image appears ──
-    ScrollTrigger.create({
-      trigger: '#about-jj',
-      start: 'top 78%',
-      once: true,
       onEnter: () => {
-        gsap.fromTo(jjImgs[0], { opacity:0, y:16 }, { opacity:1, y:0, duration:0.5, ease:'power2.out' });
-        gsap.from('.about-jj-eyebrow', { opacity:0, y:14, duration:0.4, ease:'power2.out', delay:0.1 });
-        gsap.from('.about-jj-lead',    { opacity:0, y:20, duration:0.55, ease:'power2.out', delay:0.18 });
-        gsap.from('.about-jj-body',    { opacity:0, y:14, stagger:0.1, duration:0.45, ease:'power2.out', delay:0.28 });
-        gsap.from('.about-jj-list li', { opacity:0, x:-16, stagger:0.07, duration:0.35, ease:'power2.out', delay:0.42 });
+        // Avatar + text appear when section pins
+        revealJJ(jjImgs[0]);
+        shown[0] = true;
+        gsap.to('.about-jj-text-col', { opacity: 1, duration: 0.6, ease: 'power2.out', delay: 0.15 });
       }
     });
 
-    // ── Image swap every 100vh (25% per step) ──
+    // ── Logo drifts left → right during pin ──
+    if (bgImg) {
+      gsap.to(bgImg, {
+        x: '40vw', ease: 'none',
+        scrollTrigger: { trigger: '#about-jj', start: 'top top', end: '+=300vh', scrub: 3 }
+      });
+    }
+
+    // ── Images 2/3/4 accumulate on scroll ──
     ScrollTrigger.create({
       trigger: '#about-jj',
       start: 'top top',
-      end: '+=400vh',
+      end: '+=300vh',
       onUpdate: (self) => {
-        const step = Math.min(Math.floor(self.progress * 4), 3);
-        if (step !== lastJJStep) {
-          flipJJ(step);
-          lastJJStep = step;
-        }
+        if (self.progress >= 0.30 && !shown[1]) { shown[1] = true; revealJJ(jjImgs[1]); }
+        if (self.progress >= 0.62 && !shown[2]) { shown[2] = true; revealJJ(jjImgs[2]); }
+        if (self.progress >= 0.92 && !shown[3]) { shown[3] = true; revealJJ(jjImgs[3]); }
       }
     });
 
   } else {
-    // Mobile: show first image immediately
-    gsap.set(jjImgs[0], { opacity:1 });
-    // Simple text entry
-    gsap.from('.about-jj-eyebrow, .about-jj-lead, .about-jj-body, .about-jj-list li', {
-      opacity:0, y:16, stagger:0.08, duration:0.5, ease:'power2.out',
-      scrollTrigger:{ trigger:'#about-jj', start:'top 80%', once:true }
+    // Mobile: show avatar + text immediately
+    gsap.set(jjImgs[0], { opacity: 1 });
+    gsap.to('.about-jj-text-col', { opacity: 1, duration: 0.5, ease: 'power2.out',
+      scrollTrigger: { trigger: '#about-jj', start: 'top 80%', once: true }
     });
   }
 })();
