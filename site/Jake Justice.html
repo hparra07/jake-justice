@@ -2412,49 +2412,39 @@ ctaTl
   const jjImgs = gsap.utils.toArray('.about-jj-img');
   if (!jjImgs.length) return;
 
+  // Init: all images hidden, img[0] vertically centered via GSAP (not CSS transform)
   gsap.set(jjImgs, { transformPerspective: 1000, opacity: 0 });
-  // img[0] uses top:50% — GSAP owns transforms so we set yPercent here (not in CSS)
   gsap.set(jjImgs[0], { yPercent: -50 });
   gsap.set('.about-jj-text-col', { opacity: 0 });
 
-  function revealJJ(img) {
-    gsap.fromTo(img,
-      { opacity: 0, rotateY: 14 },
-      { opacity: 1, rotateY: 0, duration: 0.45, ease: 'power2.out' }
-    );
-  }
-
   if (window.innerWidth > 660) {
     const bgImg = document.querySelector('.about-jj-bg-logo-wrap img');
-    if (bgImg) gsap.set(bgImg, { xPercent: -50, yPercent: -50, x: '-40vw' });
+    if (bgImg) gsap.set(bgImg, { xPercent: -50, yPercent: -50 });
 
-    let shown = [false, false, false, false];
-
-    // Single ScrollTrigger for pin + all scroll logic
-    // (keeping everything in one ST guarantees onUpdate progress is correct)
-    ScrollTrigger.create({
-      trigger: '#about-jj',
-      start: 'top top',
-      end: '+=300vh',
-      pin: true,
-      anticipatePin: 1,
-
-      onEnter: () => {
-        revealJJ(jjImgs[0]);
-        shown[0] = true;
-        gsap.to('.about-jj-text-col', { opacity: 1, duration: 0.6, ease: 'power2.out', delay: 0.15 });
-      },
-
-      onUpdate: (self) => {
-        // Logo drifts left → right with scroll
-        if (bgImg) gsap.set(bgImg, { x: (-40 + self.progress * 80) + 'vw' });
-
-        // Images appear one by one
-        if (!shown[1] && self.progress >= 0.28) { shown[1] = true; revealJJ(jjImgs[1]); }
-        if (!shown[2] && self.progress >= 0.58) { shown[2] = true; revealJJ(jjImgs[2]); }
-        if (!shown[3] && self.progress >= 0.88) { shown[3] = true; revealJJ(jjImgs[3]); }
+    // Scrub timeline: every animation is directly tied to scroll position.
+    // Timeline duration = 3 units → maps over 300vh of pinned scroll (1 unit ≈ 100vh).
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#about-jj',
+        start: 'top top',
+        end: '+=300vh',
+        pin: true,
+        anticipatePin: 1,
+        scrub: 1,
       }
     });
+
+    // Background logo drifts left → right across the full scroll
+    if (bgImg) tl.fromTo(bgImg, { x: '-40vw' }, { x: '40vw', ease: 'none', duration: 3 }, 0);
+
+    // Avatar + text col appear immediately when section pins (~first 10vh of scroll)
+    tl.fromTo('.about-jj-text-col', { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.1);
+    tl.fromTo(jjImgs[0], { opacity: 0, rotateY: 14 }, { opacity: 1, rotateY: 0, duration: 0.3 }, 0.15);
+
+    // Comic books appear one by one as user scrolls (~every 100vh)
+    tl.fromTo(jjImgs[1], { opacity: 0, rotateY: 14 }, { opacity: 1, rotateY: 0, duration: 0.25 }, 1.0);
+    tl.fromTo(jjImgs[2], { opacity: 0, rotateY: 14 }, { opacity: 1, rotateY: 0, duration: 0.25 }, 1.9);
+    tl.fromTo(jjImgs[3], { opacity: 0, rotateY: 14 }, { opacity: 1, rotateY: 0, duration: 0.25 }, 2.7);
 
   } else {
     gsap.set(jjImgs[0], { opacity: 1 });
