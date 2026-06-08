@@ -1632,12 +1632,12 @@ function HeroSlider() {
         <div ref={diagLRef} style={{
           position:'absolute',inset:0,
           background: SLIDES[0].diagBg,
-          clipPath: window.innerWidth<=660 ? 'polygon(0 88%, 0 100%, 10% 100%)' : 'polygon(0 35%, 0 100%, 44% 100%)'
+          clipPath: window.innerWidth<=660 ? 'polygon(0 50%, 0 100%, 44% 100%)' : 'polygon(0 35%, 0 100%, 44% 100%)'
         }}/>
         <div ref={diagRRef} style={{
           position:'absolute',inset:0,
           background: SLIDES[0].diagBg,
-          clipPath: window.innerWidth<=660 ? 'polygon(100% 88%, 100% 100%, 90% 100%)' : 'polygon(100% 35%, 100% 100%, 56% 100%)'
+          clipPath: window.innerWidth<=660 ? 'polygon(100% 50%, 100% 100%, 56% 100%)' : 'polygon(100% 35%, 100% 100%, 56% 100%)'
         }}/>
 
         {/* Caption card — fixed color, only text changes */}
