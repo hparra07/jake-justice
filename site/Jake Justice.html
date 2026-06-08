@@ -2459,6 +2459,47 @@ ctaTl
     });
   }
 })();
+
+/* ─── BUTTON BOUNCE ──────────────────────────────────────────── */
+(function(){
+  const BTNS = [
+    '.btn-primary', '.btn-secondary',
+    '.nav-cta', '.nav-mobile-cta',
+    '.cta-btn', '.pb-btn',
+    '.cases-mobile-btn',
+    '.contact-form-submit',
+    '.card-nav-btn',
+    '.scenario-tab',
+    '.playbook-lightbox-nav'
+  ].join(', ');
+
+  // Event delegation so React-rendered buttons (card-nav, scenario-tab) also get the effect
+  document.addEventListener('mouseover', function(e) {
+    const btn = e.target.closest(BTNS);
+    if (!btn || btn.disabled) return;
+    gsap.to(btn, {
+      scale: 1.12,
+      rotate: -3,
+      duration: 0.18,
+      ease: 'back.out(3)',
+      overwrite: true
+    });
+  });
+
+  document.addEventListener('mouseout', function(e) {
+    const btn = e.target.closest(BTNS);
+    if (!btn || btn.disabled) return;
+    // ignore if still inside the same button (e.g. moved to a child element)
+    if (btn.contains(e.relatedTarget)) return;
+    gsap.to(btn, {
+      scale: 1,
+      rotate: 0,
+      duration: 0.75,
+      ease: 'elastic.out(1.3, 0.4)',
+      overwrite: true
+    });
+  });
+})();
 </script>
 
 </body>
