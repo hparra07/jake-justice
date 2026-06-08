@@ -121,6 +121,18 @@
       background: repeating-linear-gradient(90deg, var(--white) 0, var(--white) 15px, var(--red) 15px, var(--red) 30px, var(--blue) 30px, var(--blue) 45px);
     }
 
+    /* ABOUT JJ SECTION */
+    #about-jj { background: var(--white); padding: 100px 80px; }
+    .about-jj-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .about-jj-logo-col { display: flex; align-items: center; justify-content: center; }
+    .about-jj-logo { width: 100%; max-width: 380px; display: block; }
+    .about-jj-text-col { display: flex; flex-direction: column; gap: 0; }
+    .about-jj-lead { font-family: 'JetBrains Mono', monospace; font-size: clamp(20px, 2.2vw, 28px); font-weight: 700; color: var(--blue); line-height: 1.2; margin-bottom: 32px; }
+    .about-jj-body { font-family: 'Alexandria', sans-serif; font-size: 17px; color: var(--dark); line-height: 1.8; margin-bottom: 24px; }
+    .about-jj-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    .about-jj-list li { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; color: var(--blue); letter-spacing: 0.04em; display: flex; align-items: center; gap: 12px; }
+    .about-jj-list li::before { content: ''; display: inline-block; width: 20px; height: 3px; background: var(--red); flex-shrink: 0; }
+
     /* CARDS SECTION */
     #cards { background: var(--dark); }
     .card-deck-container { position: relative; display: flex; flex-direction: column; align-items: center; gap: 40px; }
@@ -713,6 +725,13 @@
       .hero-card-bg-2 { width: 220px; height: 300px; }
       .hero-badge { left: calc(50% - 134px); top: 30px; font-size: 11px; padding: 10px 16px; }
 
+      /* ── ABOUT JJ ── */
+      #about-jj { padding: 64px 24px; }
+      .about-jj-inner { grid-template-columns: 1fr; gap: 40px; }
+      .about-jj-logo { max-width: 220px; margin: 0 auto; }
+      .about-jj-text-col { text-align: center; align-items: center; }
+      .about-jj-list { align-items: flex-start; text-align: left; }
+
       /* ── DO & DON'T ── */
       .rules-grid { grid-template-columns: 1fr; }
       .rules-col { padding: 56px 24px; text-align: center; }
@@ -857,6 +876,27 @@
         <img src="uploads/drive-download-20260430T161632Z-3-001/jake-justice-avatar copy.jpeg" alt="Jake Justice" class="hero-img">
       </div>
       <div class="hero-badge">KNOW YOUR RIGHTS</div>
+    </div>
+  </div>
+</section>
+
+<div class="board-divider"></div>
+
+<!-- ABOUT JAKE JUSTICE -->
+<section id="about-jj">
+  <div class="about-jj-inner">
+    <div class="about-jj-logo-col">
+      <img src="../images/jake-justice-logo-blue.png" alt="Jake Justice" class="about-jj-logo">
+    </div>
+    <div class="about-jj-text-col">
+      <p class="about-jj-lead">Jake Justice was created to make the law understandable.</p>
+      <p class="about-jj-body">Most people do not learn their constitutional rights until it is too late — during a traffic stop, an arrest, a school investigation, or a life-changing accusation.</p>
+      <p class="about-jj-body">Created by trial attorney Jacob Stuart, Jr., Jake Justice simplifies complex legal situations into practical, memorable rules designed for real life.</p>
+      <ul class="about-jj-list">
+        <li>No legal jargon.</li>
+        <li>No scare tactics.</li>
+        <li>Just clear information people can actually use.</li>
+      </ul>
     </div>
   </div>
 </section>
