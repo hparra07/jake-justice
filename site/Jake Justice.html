@@ -1865,22 +1865,20 @@ gsap.set('nav', { y:-64, opacity:0 });
 gsap.to('nav', { y:0, opacity:1, duration:0.7, ease:'power3.out', delay:0.2 });
 
 /* ─── HERO ──────────────────────────────────────────────── */
-gsap.set(['.hero-eyebrow','.hero-h1','.hero-sub','.hero-btns'], { opacity:0, y:50 });
+// Hero is always visible on load — timed entrance, no scrollTrigger needed
+gsap.set(['.hero-eyebrow','.hero-h1','.hero-sub','.hero-btns'], { opacity:0, y:40 });
 gsap.set('.hero-visual', { opacity:0, x:80, scale:0.92 });
 gsap.set('.hero-badge', { opacity:0, scale:0.6, rotation:-8 });
 gsap.set(['.hero-card-bg','.hero-card-bg-2'], { opacity:0 });
 
-const heroTl = gsap.timeline({
-  scrollTrigger: { trigger:'#hero', start:'top 80%' }
-});
-heroTl
-  .to('.hero-eyebrow', { opacity:1, y:0, duration:0.6, ease:'power3.out' })
-  .to('.hero-h1', { opacity:1, y:0, duration:1, ease:'power3.out' }, '-=0.35')
-  .to('.hero-sub', { opacity:1, y:0, duration:0.7, ease:'power3.out' }, '-=0.55')
-  .to('.hero-btns', { opacity:1, y:0, duration:0.6, ease:'power3.out' }, '-=0.4')
+gsap.timeline({ delay: 0.5 })
+  .to('.hero-eyebrow', { opacity:1, y:0, duration:0.55, ease:'power3.out' })
+  .to('.hero-h1',      { opacity:1, y:0, duration:1,    ease:'power3.out' }, '-=0.3')
+  .to('.hero-sub',     { opacity:1, y:0, duration:0.7,  ease:'power3.out' }, '-=0.55')
+  .to('.hero-btns',    { opacity:1, y:0, duration:0.6,  ease:'back.out(1.5)' }, '-=0.4')
   .to(['.hero-card-bg','.hero-card-bg-2'], { opacity:1, stagger:0.1, duration:0.7, ease:'power3.out' }, '-=0.5')
-  .to('.hero-visual', { opacity:1, x:0, scale:1, duration:1, ease:'power3.out' }, '-=0.7')
-  .to('.hero-badge', { opacity:1, scale:1, rotation:-3, duration:0.6, ease:'back.out(1.7)' }, '-=0.3');
+  .to('.hero-visual',  { opacity:1, x:0, scale:1, duration:1, ease:'power3.out' }, '-=0.7')
+  .to('.hero-badge',   { opacity:1, scale:1, rotation:-3, duration:0.6, ease:'back.out(1.7)' }, '-=0.3');
 
 /* Hero parallax */
 gsap.to('.hero-visual', {
@@ -1892,36 +1890,31 @@ gsap.to('.hero-visual', {
 gsap.utils.toArray('.board-divider').forEach(el => {
   gsap.from(el, {
     scaleX:0, transformOrigin:'left center', duration:1.2, ease:'power3.out',
-    scrollTrigger:{ trigger:el, start:'top 92%' }
+    scrollTrigger:{ trigger:el, start:'top 95%', once:true }
   });
 });
 
 /* ─── CARDS SECTION ──────────────────────────────────────── */
-gsap.from('#cards .section-label', { opacity:0, y:20, duration:0.6, ease:'power3.out', scrollTrigger:{trigger:'#cards',start:'top 80%'} });
-gsap.from('#cards .section-h2', { opacity:0, y:50, duration:0.9, ease:'power3.out', scrollTrigger:{trigger:'#cards',start:'top 75%'} });
-gsap.from('#cards .section-desc', { opacity:0, y:30, duration:0.7, ease:'power3.out', scrollTrigger:{trigger:'#cards',start:'top 70%'} });
-gsap.from('#card-app', {
-  opacity:0, y:80, scale:0.93, duration:1.1, ease:'power3.out',
-  scrollTrigger:{ trigger:'#card-app', start:'top 82%' }
-});
+gsap.timeline({ scrollTrigger:{ trigger:'#cards', start:'top 88%', once:true } })
+  .from('#cards .section-label', { opacity:0, x:-30,  duration:0.6, ease:'power3.out' })
+  .from('#cards .section-h2',    { opacity:0, y:60,   duration:0.9, ease:'power3.out' }, '-=0.35')
+  .from('#cards .section-desc',  { opacity:0, y:30,   duration:0.7, ease:'power3.out' }, '-=0.5')
+  .from('#card-app',             { opacity:0, y:80, scale:0.93, duration:1.1, ease:'power3.out' }, '-=0.4');
+
+/* ─── PLAYBOOK ────────────────────────────────────────────── */
+gsap.timeline({ scrollTrigger:{ trigger:'#playbook', start:'top 88%', once:true } })
+  .from('.playbook-header .authority-pill', { opacity:0, y:-20, duration:0.6, ease:'back.out(1.5)' })
+  .from('.playbook-header .section-h2',     { opacity:0, y:50,  duration:0.9, ease:'power3.out' }, '-=0.35')
+  .from('.playbook-subtitle',               { opacity:0, y:25,  duration:0.7, ease:'power3.out' }, '-=0.5');
 
 /* ─── DO / DON'T ─────────────────────────────────────────── */
-gsap.from('.do-col .rules-col-pill, .do-col .rules-col-title', {
-  opacity:0, x:-60, stagger:0.12, duration:0.8, ease:'power3.out',
-  scrollTrigger:{ trigger:'.rules-grid', start:'top 85%' }
-});
-gsap.from('.dont-col .rules-col-pill, .dont-col .rules-col-title', {
-  opacity:0, x:60, stagger:0.12, duration:0.8, ease:'power3.out',
-  scrollTrigger:{ trigger:'.rules-grid', start:'top 85%' }
-});
-gsap.from('.do-col .rule-item', {
-  opacity:0, x:-50, stagger:0.1, duration:0.65, ease:'power3.out',
-  scrollTrigger:{ trigger:'.rules-grid', start:'top 75%' }
-});
-gsap.from('.dont-col .rule-item', {
-  opacity:0, x:50, stagger:0.1, duration:0.65, ease:'power3.out',
-  scrollTrigger:{ trigger:'.rules-grid', start:'top 75%' }
-});
+gsap.timeline({ scrollTrigger:{ trigger:'.rules-grid', start:'top 88%', once:true } })
+  .from('.do-col .rules-col-pill',  { opacity:0, x:-60, duration:0.7, ease:'power3.out' })
+  .from('.do-col .rules-col-title', { opacity:0, x:-60, duration:0.7, ease:'power3.out' }, '-=0.5')
+  .from('.dont-col .rules-col-pill',  { opacity:0, x:60, duration:0.7, ease:'power3.out' }, '<')
+  .from('.dont-col .rules-col-title', { opacity:0, x:60, duration:0.7, ease:'power3.out' }, '-=0.5')
+  .from('.do-col .rule-item',   { opacity:0, x:-45, stagger:0.08, duration:0.55, ease:'power3.out' }, '-=0.3')
+  .from('.dont-col .rule-item', { opacity:0, x:45,  stagger:0.08, duration:0.55, ease:'power3.out' }, '<');
 
 /* ─── PLAYBOOK GALLERY SLIDER ────────────────────────── */
 (function(){
@@ -2260,11 +2253,9 @@ gsap.from('.dont-col .rule-item', {
 })();
 
 /* ─── SCENARIO ───────────────────────────────────────────── */
-gsap.from('.scenario-header-centered', { opacity:0, y:40, duration:0.9, ease:'power3.out', scrollTrigger:{trigger:'#scenario',start:'top 82%'} });
-gsap.from('#scenario-app', {
-  opacity:0, y:60, duration:1, ease:'power3.out',
-  scrollTrigger:{ trigger:'#scenario', start:'top 75%' }
-});
+gsap.timeline({ scrollTrigger:{ trigger:'#scenario', start:'top 88%', once:true } })
+  .from('.scenario-header-centered', { opacity:0, y:50, duration:0.9, ease:'power3.out' })
+  .from('#scenario-app', { opacity:0, y:70, scale:0.97, duration:1, ease:'power3.out' }, '-=0.5');
 
 /* ─── CASES: SCROLL PIN + DRAG (desktop) / ARROWS (mobile) ── */
 const casesSection = document.getElementById('cases-section');
@@ -2302,9 +2293,10 @@ if (window.innerWidth > 900) {
       onDrag() { window.scrollTo(0, dragStartScroll + (this.startX - this.x)); }
     });
 
-    gsap.from('#cases-pin .section-h2', { opacity:0, x:-50, duration:1, ease:'power3.out', scrollTrigger:{ trigger:casesSection, start:'top 80%' } });
-    gsap.from('#cases-pin .section-label', { opacity:0, x:-30, duration:0.7, ease:'power3.out', scrollTrigger:{ trigger:casesSection, start:'top 80%' } });
-    gsap.from('.cases-scroll-hint', { opacity:0, x:-20, duration:0.6, ease:'power3.out', delay:0.4, scrollTrigger:{ trigger:casesSection, start:'top 80%' } });
+    gsap.timeline({ scrollTrigger:{ trigger:casesSection, start:'top 88%', once:true } })
+      .from('#cases-pin .section-label',  { opacity:0, x:-40, duration:0.6, ease:'power3.out' })
+      .from('#cases-pin .section-h2',     { opacity:0, x:-60, duration:0.9, ease:'power3.out' }, '-=0.4')
+      .from('.cases-scroll-hint',         { opacity:0, x:-20, duration:0.6, ease:'power3.out' }, '-=0.3');
   }, 600);
 
 } else {
@@ -2344,24 +2336,13 @@ if (window.innerWidth > 900) {
 }
 
 /* ─── AUTHORITY ──────────────────────────────────────────── */
-gsap.from('.authority-photo-wrap', {
-  opacity:0, x:-80, duration:1.1, ease:'power3.out',
-  scrollTrigger:{ trigger:'#authority', start:'top 75%' }
-});
-gsap.from('.authority-accent', {
-  scale:0, duration:0.9, ease:'back.out(1.4)',
-  scrollTrigger:{ trigger:'#authority', start:'top 70%' }
-});
-gsap.from('#authority .section-h2', {
-  opacity:0, y:50, duration:1, ease:'power3.out',
-  scrollTrigger:{ trigger:'#authority', start:'top 78%' }
-});
-gsap.from('#authority p', {
-  opacity:0, y:30, duration:0.8, ease:'power3.out',
-  scrollTrigger:{ trigger:'#authority', start:'top 72%' }
-});
+gsap.timeline({ scrollTrigger:{ trigger:'#authority', start:'top 88%', once:true } })
+  .from('.authority-photo-wrap', { opacity:0, x:-80, rotation:-2, duration:1.1, ease:'power3.out' })
+  .from('.authority-accent',     { scale:0, duration:0.8, ease:'back.out(1.4)' }, '-=0.8')
+  .from('#authority .section-h2',{ opacity:0, y:40, duration:0.9, ease:'power3.out' }, '-=0.7')
+  .from('#authority p',          { opacity:0, y:25, stagger:0.12, duration:0.7, ease:'power3.out' }, '-=0.55');
 
-// Stats count-up
+/* Stats count-up */
 gsap.utils.toArray('.stat-num').forEach(el => {
   const raw = el.textContent;
   const num = parseFloat(raw.replace(/[^0-9.]/g, ''));
@@ -2371,29 +2352,27 @@ gsap.utils.toArray('.stat-num').forEach(el => {
     gsap.to(obj, {
       val: num, duration: 2, ease: 'power2.out',
       onUpdate: () => { el.textContent = Math.round(obj.val) + suffix; },
-      scrollTrigger: { trigger: el, start: 'top 85%' }
+      scrollTrigger: { trigger: el, start: 'top 88%', once: true }
     });
   }
 });
 
 gsap.from('.trust-badge', {
-  opacity:0, x:60, stagger:0.15, duration:0.8, ease:'power3.out',
-  scrollTrigger:{ trigger:'.trust-badges', start:'top 85%' }
+  opacity:0, x:50, stagger:0.12, duration:0.7, ease:'back.out(1.3)',
+  scrollTrigger:{ trigger:'.trust-badges', start:'top 88%', once:true }
 });
 gsap.from('.stat-item', {
-  opacity:0, y:30, stagger:0.1, duration:0.7, ease:'power3.out',
-  scrollTrigger:{ trigger:'.stats-row', start:'top 85%' }
+  opacity:0, y:35, stagger:0.1, duration:0.7, ease:'power3.out',
+  scrollTrigger:{ trigger:'.stats-row', start:'top 88%', once:true }
 });
 
 /* ─── CTA ────────────────────────────────────────────────── */
-const ctaTl = gsap.timeline({
-  scrollTrigger:{ trigger:'#cta', start:'top 78%' }
-});
-ctaTl
-  .from('.cta-h2', { opacity:0, y:70, duration:1, ease:'power3.out' })
-  .from('.cta-sub', { opacity:0, y:40, duration:0.8, ease:'power3.out' }, '-=0.5')
-  .from('.cta-phone', { opacity:0, scale:0.85, duration:0.7, ease:'back.out(1.5)' }, '-=0.4')
-  .from('.btn-white', { opacity:0, y:24, duration:0.6, ease:'power3.out' }, '-=0.3');
+gsap.timeline({ scrollTrigger:{ trigger:'#cta', start:'top 88%', once:true } })
+  .from('.cta-badge', { opacity:0, y:-30, duration:0.6, ease:'back.out(2)' })
+  .from('.cta-h2',    { opacity:0, y:60, duration:1, ease:'power3.out' }, '-=0.25')
+  .from('.cta-sub',   { opacity:0, y:35, stagger:0.15, duration:0.8, ease:'power3.out' }, '-=0.5')
+  .from('.cta-btns',  { opacity:0, y:25, duration:0.6, ease:'back.out(1.5)' }, '-=0.3')
+  .from('.cta-free',  { opacity:0, duration:0.5 }, '-=0.2');
 
 /* ─── ABOUT JJ SCROLL ─────────────────────────────────────── */
 (function(){
