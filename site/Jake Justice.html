@@ -1593,8 +1593,8 @@ function HeroSlider() {
       const s = SLIDES[newIdx];
       titleRef.current.textContent = s.title;
       tagRef.current.textContent   = s.tag;
-      diagLRef.current.style.background = s.diagBg;
-      diagRRef.current.style.background = s.diagBg;
+      if (diagLRef.current) diagLRef.current.style.background = s.diagBg;
+      if (diagRRef.current) diagRRef.current.style.background = s.diagBg;
       setDisplayIdx(newIdx);
     }, [], 0.46);
     tl.to([titleRef.current, tagRef.current], { opacity:1, duration:0.2, ease:'power2.out' }, 0.46);
@@ -1628,17 +1628,19 @@ function HeroSlider() {
       {/* Overlay: V shapes + caption — fades out/in; never animates position */}
       <div ref={overlayRef} style={{position:'absolute',inset:0,zIndex:5,pointerEvents:'none',opacity:0}}>
 
-        {/* V diagonals */}
+        {/* V diagonals — desktop only */}
+        {window.innerWidth > 660 && <>
         <div ref={diagLRef} style={{
           position:'absolute',inset:0,
           background: SLIDES[0].diagBg,
-          clipPath: window.innerWidth<=660 ? 'polygon(0 80%, 0 100%, 18% 100%)' : 'polygon(0 35%, 0 100%, 44% 100%)'
+          clipPath:'polygon(0 35%, 0 100%, 44% 100%)'
         }}/>
         <div ref={diagRRef} style={{
           position:'absolute',inset:0,
           background: SLIDES[0].diagBg,
-          clipPath: window.innerWidth<=660 ? 'polygon(100% 80%, 100% 100%, 82% 100%)' : 'polygon(100% 35%, 100% 100%, 56% 100%)'
+          clipPath:'polygon(100% 35%, 100% 100%, 56% 100%)'
         }}/>
+        </>}
 
         {/* Caption card — fixed color, only text changes */}
         <div style={{
