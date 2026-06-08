@@ -127,57 +127,60 @@
       background: var(--white);
       padding: 0;
       position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      height: 100vh;
     }
+    /* HUGE background logo — clipped within section */
     .about-jj-bg-logo-wrap {
       position: absolute;
-      top: 50%;
-      left: 0;
+      inset: 0;
+      overflow: hidden;
       pointer-events: none;
       z-index: 0;
     }
     .about-jj-bg-logo-wrap img {
-      width: 680px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 160vw;
       max-width: none;
-      opacity: 0.13;
-      display: block;
+      opacity: 0.08;
     }
-    .about-jj-grid {
-      max-width: 1100px;
-      width: 100%;
-      padding: 80px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-      position: relative;
-      z-index: 1;
-    }
-    .about-jj-img-col {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .about-jj-img-stack {
-      position: relative;
-      width: 400px;
-      height: 460px;
-      perspective: 1200px;
-      transform-style: preserve-3d;
-    }
+    /* Each image at its own absolute position */
     .about-jj-img {
       position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
       opacity: 0;
-      backface-visibility: hidden;
+      z-index: 2;
+      height: auto;
     }
-    .about-jj-text-col { display: flex; flex-direction: column; }
+    .about-jj-img[data-step="0"] {
+      width: clamp(220px, 26vw, 360px);
+      left: 5%; top: 50%;
+      transform: translateY(-50%);
+    }
+    .about-jj-img[data-step="1"] {
+      width: clamp(200px, 24vw, 320px);
+      left: 32%; top: 4%;
+    }
+    .about-jj-img[data-step="2"] {
+      width: clamp(210px, 25vw, 340px);
+      left: 4%; bottom: 5%;
+    }
+    .about-jj-img[data-step="3"] {
+      width: clamp(190px, 22vw, 300px);
+      left: 30%; bottom: 4%;
+    }
+    /* Text column — fixed right side */
+    .about-jj-text-col {
+      position: absolute;
+      right: 5%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 38%;
+      max-width: 440px;
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+    }
     .about-jj-eyebrow {
       display: inline-block;
       background: var(--red);
@@ -193,7 +196,7 @@
     }
     .about-jj-lead {
       font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(22px, 2.4vw, 36px);
+      font-size: clamp(20px, 2.2vw, 34px);
       font-weight: 700;
       color: var(--blue);
       line-height: 1.15;
@@ -201,7 +204,7 @@
     }
     .about-jj-body {
       font-family: 'Alexandria', sans-serif;
-      font-size: 17px;
+      font-size: 16px;
       color: var(--dark);
       line-height: 1.85;
       margin-bottom: 20px;
@@ -209,18 +212,18 @@
     .about-jj-list {
       list-style: none;
       padding: 0;
-      margin: 28px 0 0;
+      margin: 24px 0 0;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
     .about-jj-list li {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--blue);
       letter-spacing: 0.05em;
-      padding: 14px 20px;
+      padding: 12px 18px;
       background: var(--light-gray);
       border-left: 3px solid var(--red);
     }
@@ -818,11 +821,11 @@
       .hero-badge { left: calc(50% - 134px); top: 30px; font-size: 11px; padding: 10px 16px; }
 
       /* ── ABOUT JJ ── */
-      #about-jj { min-height: auto; padding: 64px 24px; display: block; }
+      #about-jj { height: auto; padding: 64px 24px; display: flex; flex-direction: column; align-items: flex-start; gap: 36px; }
       .about-jj-bg-logo-wrap { display: none; }
-      .about-jj-grid { grid-template-columns: 1fr; padding: 0; gap: 48px; }
-      .about-jj-img-stack { width: 100%; max-width: 280px; height: 320px; margin: 0 auto; }
-      .about-jj-list li { font-size: 13px; }
+      .about-jj-img { position: relative; width: 200px; max-width: 200px; height: auto; top: auto; left: auto; right: auto; bottom: auto; transform: none; display: none; }
+      .about-jj-img[data-step="0"] { display: block; margin: 0 auto; }
+      .about-jj-text-col { position: relative; right: auto; top: auto; transform: none; width: 100%; max-width: 100%; }
 
       /* ── DO & DON'T ── */
       .rules-grid { grid-template-columns: 1fr; }
@@ -976,31 +979,26 @@
 
 <!-- ABOUT JAKE JUSTICE -->
 <section id="about-jj">
+  <!-- Huge background logo (GSAP moves it left→right) -->
   <div class="about-jj-bg-logo-wrap">
     <img src="../images/jake-justice-logo-blue.png" alt="">
   </div>
-  <div class="about-jj-grid">
-    <!-- IMAGE LEFT -->
-    <div class="about-jj-img-col">
-      <div class="about-jj-img-stack">
-        <img src="../images/jake-justice-avatar-main.png" alt="Jake Justice" class="about-jj-img">
-        <img src="../images/how-to-talk-dont.png" alt="How To Talk" class="about-jj-img">
-        <img src="../images/where-are-you-going.png" alt="Where Are You Going" class="about-jj-img">
-        <img src="../images/have-the-feelings.png" alt="Have The Feelings" class="about-jj-img">
-      </div>
-    </div>
-    <!-- TEXT RIGHT -->
-    <div class="about-jj-text-col">
-      <span class="about-jj-eyebrow">About Jake Justice</span>
-      <p class="about-jj-lead">Jake Justice was created to make the law understandable.</p>
-      <p class="about-jj-body">Most people do not learn their constitutional rights until it is too late — during a traffic stop, an arrest, a school investigation, or a life-changing accusation.</p>
-      <p class="about-jj-body">Created by trial attorney Jacob Stuart, Jr., Jake Justice simplifies complex legal situations into practical, memorable rules designed for real life.</p>
-      <ul class="about-jj-list">
-        <li>No legal jargon.</li>
-        <li>No scare tactics.</li>
-        <li>Just clear information people can actually use.</li>
-      </ul>
-    </div>
+  <!-- 4 images at their own absolute positions -->
+  <img src="../images/jake-justice-avatar-main.png" alt="Jake Justice" class="about-jj-img" data-step="0">
+  <img src="../images/how-to-talk-dont.png"         alt="How To Talk"  class="about-jj-img" data-step="1">
+  <img src="../images/where-are-you-going.png"       alt="Where Are You Going" class="about-jj-img" data-step="2">
+  <img src="../images/have-the-feelings.png"         alt="Have The Feelings"   class="about-jj-img" data-step="3">
+  <!-- Text fixed on right -->
+  <div class="about-jj-text-col">
+    <span class="about-jj-eyebrow">About Jake Justice</span>
+    <p class="about-jj-lead">Jake Justice was created to make the law understandable.</p>
+    <p class="about-jj-body">Most people do not learn their constitutional rights until it is too late — during a traffic stop, an arrest, a school investigation, or a life-changing accusation.</p>
+    <p class="about-jj-body">Created by trial attorney Jacob Stuart, Jr., Jake Justice simplifies complex legal situations into practical, memorable rules designed for real life.</p>
+    <ul class="about-jj-list">
+      <li>No legal jargon.</li>
+      <li>No scare tactics.</li>
+      <li>Just clear information people can actually use.</li>
+    </ul>
   </div>
 </section>
 
@@ -2415,47 +2413,37 @@ ctaTl
   let currentJJIdx = 0;
   let lastJJStep   = 0;
 
-  // All images hidden; rotateY ready
-  jjImgs.forEach((img, i) => gsap.set(img, { opacity:0, rotateY: i === 0 ? 0 : 90 }));
+  // Give each image its own perspective for the flip
+  gsap.set(jjImgs, { transformPerspective: 1000, opacity: 0 });
 
+  // ── Minimal flip: subtle rotateY + fade ──
   function flipJJ(newIdx) {
     if (newIdx === currentJJIdx) return;
     const out = jjImgs[currentJJIdx];
     const inn = jjImgs[newIdx];
     const dir = newIdx > currentJJIdx ? 1 : -1;
-    const tl  = gsap.timeline();
-    tl.to(out, { rotateY:-90*dir, opacity:0, duration:0.38, ease:'power2.in' });
-    tl.set(inn, { rotateY:90*dir, opacity:0 });
-    tl.to(inn,  { rotateY:0, opacity:1, duration:0.38, ease:'power2.out' }, '-=0.05');
+    gsap.to(out, { opacity:0, rotateY:-18*dir, duration:0.3, ease:'power2.in' });
+    gsap.fromTo(inn,
+      { opacity:0, rotateY:18*dir },
+      { opacity:1, rotateY:0, duration:0.35, ease:'power2.out', delay:0.25 }
+    );
     currentJJIdx = newIdx;
   }
 
-  // ── Entry animation (fires when section enters viewport) ──
-  const jjEntryTl = gsap.timeline({
-    paused: true,
-    defaults: { ease:'power3.out' }
-  });
-  jjEntryTl
-    .fromTo(jjImgs[0], { opacity:0, scale:0.85, rotateY:-20 },
-                        { opacity:1, scale:1,    rotateY:0, duration:0.85, ease:'back.out(1.3)' })
-    .from('.about-jj-eyebrow', { opacity:0, y:20, duration:0.45 }, 0.15)
-    .from('.about-jj-lead',    { opacity:0, y:32, duration:0.65 }, 0.25)
-    .from('.about-jj-body',    { opacity:0, y:24, stagger:0.12, duration:0.5 }, 0.38)
-    .from('.about-jj-list li', { opacity:0, x:-24, stagger:0.08, duration:0.4 }, 0.55);
-
-  ScrollTrigger.create({
-    trigger: '#about-jj',
-    start: 'top 78%',
-    once: true,
-    onEnter: () => jjEntryTl.play()
-  });
-
-  // ── Desktop: pin + scroll images + logo ──
   if (window.innerWidth > 660) {
-    // Register y with GSAP (avoids CSS transform conflict)
-    gsap.set('.about-jj-bg-logo-wrap', { yPercent:-50, x:'-100vw' });
+    // ── Logo: register transform with GSAP then scrub left→right ──
+    const bgImg = document.querySelector('.about-jj-bg-logo-wrap img');
+    if (bgImg) {
+      gsap.set(bgImg, { xPercent:-50, yPercent:-50, x:'-40vw' });
+      gsap.to(bgImg, {
+        x: '40vw', ease:'none',
+        scrollTrigger:{
+          trigger:'#about-jj', start:'top top', end:'+=400vh', scrub:3
+        }
+      });
+    }
 
-    // Pin the section for 400vh of scroll
+    // ── Pin section + show images at different positions on scroll ──
     ScrollTrigger.create({
       trigger: '#about-jj',
       start: 'top top',
@@ -2464,19 +2452,21 @@ ctaTl
       anticipatePin: 1,
     });
 
-    // Logo drifts left → right
-    gsap.to('.about-jj-bg-logo-wrap', {
-      x: '80vw',
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '#about-jj',
-        start: 'top top',
-        end: '+=400vh',
-        scrub: 2
+    // ── Entry: text fades in, first image appears ──
+    ScrollTrigger.create({
+      trigger: '#about-jj',
+      start: 'top 78%',
+      once: true,
+      onEnter: () => {
+        gsap.fromTo(jjImgs[0], { opacity:0, y:16 }, { opacity:1, y:0, duration:0.5, ease:'power2.out' });
+        gsap.from('.about-jj-eyebrow', { opacity:0, y:14, duration:0.4, ease:'power2.out', delay:0.1 });
+        gsap.from('.about-jj-lead',    { opacity:0, y:20, duration:0.55, ease:'power2.out', delay:0.18 });
+        gsap.from('.about-jj-body',    { opacity:0, y:14, stagger:0.1, duration:0.45, ease:'power2.out', delay:0.28 });
+        gsap.from('.about-jj-list li', { opacity:0, x:-16, stagger:0.07, duration:0.35, ease:'power2.out', delay:0.42 });
       }
     });
 
-    // Image flip every 100vh of scroll (4 × 25%)
+    // ── Image swap every 100vh (25% per step) ──
     ScrollTrigger.create({
       trigger: '#about-jj',
       start: 'top top',
@@ -2491,8 +2481,13 @@ ctaTl
     });
 
   } else {
-    // Mobile: show first image directly (no scroll tricks)
-    gsap.set(jjImgs[0], { opacity:1, scale:1, rotateY:0 });
+    // Mobile: show first image immediately
+    gsap.set(jjImgs[0], { opacity:1 });
+    // Simple text entry
+    gsap.from('.about-jj-eyebrow, .about-jj-lead, .about-jj-body, .about-jj-list li', {
+      opacity:0, y:16, stagger:0.08, duration:0.5, ease:'power2.out',
+      scrollTrigger:{ trigger:'#about-jj', start:'top 80%', once:true }
+    });
   }
 })();
 </script>
