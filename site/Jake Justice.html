@@ -1903,33 +1903,61 @@ gsap.to('.hero-visual', {
 
 /* ─── BOARD DIVIDERS ─────────────────────────────────────── */
 gsap.utils.toArray('.board-divider').forEach(el => {
-  gsap.from(el, {
-    scaleX:0, transformOrigin:'left center', duration:1.2, ease:'power3.out',
-    scrollTrigger:{ trigger:el, start:'top 95%', once:true }
+  gsap.set(el, { scaleX: 0, transformOrigin: 'left center' });
+  ScrollTrigger.create({
+    trigger: el, start: 'top 95%', once: true,
+    onEnter: () => gsap.to(el, { scaleX: 1, duration: 1.2, ease: 'power3.out' })
   });
 });
 
 /* ─── CARDS SECTION ──────────────────────────────────────── */
-gsap.timeline({ scrollTrigger:{ trigger:'#cards', start:'top 70%', once:true } })
-  .from('#cards .section-label', { opacity:0, x:-30,  duration:0.6, ease:'power3.out' })
-  .from('#cards .section-h2',    { opacity:0, y:60,   duration:0.9, ease:'power3.out' }, '-=0.35')
-  .from('#cards .section-desc',  { opacity:0, y:30,   duration:0.7, ease:'power3.out' }, '-=0.5')
-  .from('#card-app',             { opacity:0, y:80, scale:0.93, duration:1.1, ease:'power3.out' }, '-=0.4');
+gsap.set(['#cards .section-label','#cards .section-h2','#cards .section-desc','#card-app'], { opacity:0 });
+ScrollTrigger.create({
+  trigger:'#cards', start:'top 75%', once:true,
+  onEnter: () => {
+    gsap.timeline()
+      .to('#cards .section-label', { opacity:1, x:0, skewX:0, duration:0.6, ease:'power3.out',
+          startAt:{ x:-50, skewX:6 } })
+      .to('#cards .section-h2',    { opacity:1, y:0, skewX:0, duration:0.9, ease:'power3.out',
+          startAt:{ y:90, skewX:-7 } }, '-=0.35')
+      .to('#cards .section-desc',  { opacity:1, y:0, duration:0.7, ease:'power3.out',
+          startAt:{ y:30 } }, '-=0.5')
+      .to('#card-app',             { opacity:1, y:0, scale:1, rotation:0, duration:1.2, ease:'back.out(1.5)',
+          startAt:{ y:110, scale:0.85, rotation:-5 } }, '-=0.4');
+  }
+});
 
 /* ─── PLAYBOOK ────────────────────────────────────────────── */
-gsap.timeline({ scrollTrigger:{ trigger:'#playbook', start:'top 70%', once:true } })
-  .from('.playbook-header .authority-pill', { opacity:0, y:-20, duration:0.6, ease:'back.out(1.5)' })
-  .from('.playbook-header .section-h2',     { opacity:0, y:50,  duration:0.9, ease:'power3.out' }, '-=0.35')
-  .from('.playbook-subtitle',               { opacity:0, y:25,  duration:0.7, ease:'power3.out' }, '-=0.5');
+gsap.set(['.playbook-header .authority-pill','.playbook-header .section-h2','.playbook-subtitle'], { opacity:0 });
+ScrollTrigger.create({
+  trigger:'#playbook', start:'top 75%', once:true,
+  onEnter: () => {
+    gsap.timeline()
+      .to('.playbook-header .authority-pill', { opacity:1, y:0, scale:1, duration:0.65, ease:'back.out(2.5)',
+          startAt:{ y:-30, scale:0.6 } })
+      .to('.playbook-header .section-h2',     { opacity:1, y:0, skewX:0, duration:0.95, ease:'power3.out',
+          startAt:{ y:65, skewX:-6 } }, '-=0.35')
+      .to('.playbook-subtitle',               { opacity:1, y:0, duration:0.7, ease:'power3.out',
+          startAt:{ y:28 } }, '-=0.5');
+  }
+});
 
 /* ─── DO / DON'T ─────────────────────────────────────────── */
-gsap.timeline({ scrollTrigger:{ trigger:'.rules-grid', start:'top 70%', once:true } })
-  .from('.do-col .rules-col-pill',  { opacity:0, x:-60, duration:0.7, ease:'power3.out' })
-  .from('.do-col .rules-col-title', { opacity:0, x:-60, duration:0.7, ease:'power3.out' }, '-=0.5')
-  .from('.dont-col .rules-col-pill',  { opacity:0, x:60, duration:0.7, ease:'power3.out' }, '<')
-  .from('.dont-col .rules-col-title', { opacity:0, x:60, duration:0.7, ease:'power3.out' }, '-=0.5')
-  .from('.do-col .rule-item',   { opacity:0, x:-45, stagger:0.08, duration:0.55, ease:'power3.out' }, '-=0.3')
-  .from('.dont-col .rule-item', { opacity:0, x:45,  stagger:0.08, duration:0.55, ease:'power3.out' }, '<');
+gsap.set(['.do-col .rules-col-pill','.do-col .rules-col-title',
+          '.dont-col .rules-col-pill','.dont-col .rules-col-title',
+          '.do-col .rule-item','.dont-col .rule-item'], { opacity:0 });
+ScrollTrigger.create({
+  trigger:'.rules-grid', start:'top 75%', once:true,
+  onEnter: () => {
+    gsap.timeline()
+      .to('.do-col .rules-col-pill',    { opacity:1, x:0, duration:0.7, ease:'power3.out', startAt:{ x:-70 } })
+      .to('.do-col .rules-col-title',   { opacity:1, x:0, duration:0.7, ease:'power3.out', startAt:{ x:-70 } }, '-=0.5')
+      .to('.dont-col .rules-col-pill',  { opacity:1, x:0, duration:0.7, ease:'power3.out', startAt:{ x:70 } }, '<')
+      .to('.dont-col .rules-col-title', { opacity:1, x:0, duration:0.7, ease:'power3.out', startAt:{ x:70 } }, '-=0.5')
+      .to('.do-col .rule-item',   { opacity:1, x:0, stagger:0.08, duration:0.55, ease:'power3.out', startAt:{ x:-50 } }, '-=0.3')
+      .to('.dont-col .rule-item', { opacity:1, x:0, stagger:0.08, duration:0.55, ease:'power3.out', startAt:{ x:50 } }, '<');
+  }
+});
 
 /* ─── PLAYBOOK GALLERY SLIDER ────────────────────────── */
 (function(){
@@ -2268,9 +2296,17 @@ gsap.timeline({ scrollTrigger:{ trigger:'.rules-grid', start:'top 70%', once:tru
 })();
 
 /* ─── SCENARIO ───────────────────────────────────────────── */
-gsap.timeline({ scrollTrigger:{ trigger:'#scenario', start:'top 70%', once:true } })
-  .from('.scenario-header-centered', { opacity:0, y:50, duration:0.9, ease:'power3.out' })
-  .from('#scenario-app', { opacity:0, y:70, scale:0.97, duration:1, ease:'power3.out' }, '-=0.5');
+gsap.set(['.scenario-header-centered','#scenario-app'], { opacity:0 });
+ScrollTrigger.create({
+  trigger:'#scenario', start:'top 75%', once:true,
+  onEnter: () => {
+    gsap.timeline()
+      .to('.scenario-header-centered', { opacity:1, y:0, skewX:0, duration:0.95, ease:'power3.out',
+          startAt:{ y:65, skewX:-5 } })
+      .to('#scenario-app', { opacity:1, y:0, scale:1, duration:1.15, ease:'back.out(1.4)',
+          startAt:{ y:90, scale:0.93 } }, '-=0.5');
+  }
+});
 
 /* ─── CASES: SCROLL PIN + DRAG (desktop) / ARROWS (mobile) ── */
 const casesSection = document.getElementById('cases-section');
@@ -2308,10 +2344,17 @@ if (window.innerWidth > 900) {
       onDrag() { window.scrollTo(0, dragStartScroll + (this.startX - this.x)); }
     });
 
-    gsap.timeline({ scrollTrigger:{ trigger:casesSection, start:'top 70%', once:true } })
-      .from('#cases-pin .section-label',  { opacity:0, x:-40, duration:0.6, ease:'power3.out' })
-      .from('#cases-pin .section-h2',     { opacity:0, x:-60, duration:0.9, ease:'power3.out' }, '-=0.4')
-      .from('.cases-scroll-hint',         { opacity:0, x:-20, duration:0.6, ease:'power3.out' }, '-=0.3');
+    gsap.set(['#cases-pin .section-label','#cases-pin .section-h2','.cases-scroll-hint'], { opacity:0 });
+    ScrollTrigger.create({
+      trigger: casesSection, start:'top 75%', once:true,
+      onEnter: () => {
+        gsap.timeline()
+          .to('#cases-pin .section-label', { opacity:1, x:0, duration:0.6, ease:'power3.out', startAt:{ x:-55 } })
+          .to('#cases-pin .section-h2',    { opacity:1, x:0, skewX:0, duration:0.95, ease:'power3.out',
+              startAt:{ x:-80, skewX:-6 } }, '-=0.4')
+          .to('.cases-scroll-hint',        { opacity:1, x:0, duration:0.6, ease:'power3.out', startAt:{ x:-28 } }, '-=0.3');
+      }
+    });
   }, 600);
 
 } else {
@@ -2351,11 +2394,21 @@ if (window.innerWidth > 900) {
 }
 
 /* ─── AUTHORITY ──────────────────────────────────────────── */
-gsap.timeline({ scrollTrigger:{ trigger:'#authority', start:'top 70%', once:true } })
-  .from('.authority-photo-wrap', { opacity:0, x:-80, rotation:-2, duration:1.1, ease:'power3.out' })
-  .from('.authority-accent',     { scale:0, duration:0.8, ease:'back.out(1.4)' }, '-=0.8')
-  .from('#authority .section-h2',{ opacity:0, y:40, duration:0.9, ease:'power3.out' }, '-=0.7')
-  .from('#authority p',          { opacity:0, y:25, stagger:0.12, duration:0.7, ease:'power3.out' }, '-=0.55');
+gsap.set(['.authority-photo-wrap','.authority-accent','#authority .section-h2','#authority p'], { opacity:0 });
+ScrollTrigger.create({
+  trigger:'#authority', start:'top 75%', once:true,
+  onEnter: () => {
+    gsap.timeline()
+      .to('.authority-photo-wrap', { opacity:1, x:0, rotation:0, duration:1.1, ease:'power3.out',
+          startAt:{ x:-90, rotation:-3 } })
+      .to('.authority-accent',     { opacity:1, scale:1, duration:0.8, ease:'back.out(1.6)',
+          startAt:{ scale:0 } }, '-=0.8')
+      .to('#authority .section-h2',{ opacity:1, y:0, skewX:0, duration:0.95, ease:'power3.out',
+          startAt:{ y:50, skewX:-5 } }, '-=0.7')
+      .to('#authority p',          { opacity:1, y:0, stagger:0.12, duration:0.7, ease:'power3.out',
+          startAt:{ y:28 } }, '-=0.55');
+  }
+});
 
 /* Stats count-up */
 gsap.utils.toArray('.stat-num').forEach(el => {
@@ -2365,29 +2418,42 @@ gsap.utils.toArray('.stat-num').forEach(el => {
   if (!isNaN(num) && num > 0) {
     const obj = { val: 0 };
     gsap.to(obj, {
-      val: num, duration: 2, ease: 'power2.out',
+      val: num, duration: 2.2, ease: 'power2.out',
       onUpdate: () => { el.textContent = Math.round(obj.val) + suffix; },
-      scrollTrigger: { trigger: el, start: 'top 70%', once: true }
+      scrollTrigger: { trigger: el, start: 'top 80%', once: true }
     });
   }
 });
 
-gsap.from('.trust-badge', {
-  opacity:0, x:50, stagger:0.12, duration:0.7, ease:'back.out(1.3)',
-  scrollTrigger:{ trigger:'.trust-badges', start:'top 70%', once:true }
+gsap.set(['.trust-badge','.stat-item'], { opacity:0 });
+ScrollTrigger.create({
+  trigger:'.trust-badges', start:'top 80%', once:true,
+  onEnter: () => gsap.to('.trust-badge', { opacity:1, x:0, stagger:0.12, duration:0.7, ease:'back.out(1.4)',
+      startAt:{ x:55 } })
 });
-gsap.from('.stat-item', {
-  opacity:0, y:35, stagger:0.1, duration:0.7, ease:'power3.out',
-  scrollTrigger:{ trigger:'.stats-row', start:'top 70%', once:true }
+ScrollTrigger.create({
+  trigger:'.stats-row', start:'top 80%', once:true,
+  onEnter: () => gsap.to('.stat-item', { opacity:1, y:0, stagger:0.1, duration:0.7, ease:'power3.out',
+      startAt:{ y:40 } })
 });
 
 /* ─── CTA ────────────────────────────────────────────────── */
-gsap.timeline({ scrollTrigger:{ trigger:'#cta', start:'top 70%', once:true } })
-  .from('.cta-badge', { opacity:0, y:-30, duration:0.6, ease:'back.out(2)' })
-  .from('.cta-h2',    { opacity:0, y:60, duration:1, ease:'power3.out' }, '-=0.25')
-  .from('.cta-sub',   { opacity:0, y:35, stagger:0.15, duration:0.8, ease:'power3.out' }, '-=0.5')
-  .from('.cta-btns',  { opacity:0, y:25, duration:0.6, ease:'back.out(1.5)' }, '-=0.3')
-  .from('.cta-free',  { opacity:0, duration:0.5 }, '-=0.2');
+gsap.set(['.cta-badge','.cta-h2','.cta-sub','.cta-btns','.cta-free'], { opacity:0 });
+ScrollTrigger.create({
+  trigger:'#cta', start:'top 75%', once:true,
+  onEnter: () => {
+    gsap.timeline()
+      .to('.cta-badge', { opacity:1, y:0, scale:1, duration:0.65, ease:'back.out(2.8)',
+          startAt:{ y:-35, scale:0.65 } })
+      .to('.cta-h2',    { opacity:1, y:0, skewX:0, duration:1.05, ease:'power3.out',
+          startAt:{ y:75, skewX:-6 } }, '-=0.25')
+      .to('.cta-sub',   { opacity:1, y:0, stagger:0.15, duration:0.8, ease:'power3.out',
+          startAt:{ y:38 } }, '-=0.5')
+      .to('.cta-btns',  { opacity:1, y:0, scale:1, duration:0.75, ease:'back.out(2)',
+          startAt:{ y:32, scale:0.88 } }, '-=0.3')
+      .to('.cta-free',  { opacity:1, duration:0.5 }, '-=0.2');
+  }
+});
 
 /* ─── ABOUT JJ SCROLL ─────────────────────────────────────── */
 (function(){
