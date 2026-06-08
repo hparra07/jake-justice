@@ -775,7 +775,7 @@
     <a href="#scenario">Scenarios</a>
     <a href="#authority">About</a>
   </div>
-  <a href="#cta" class="nav-cta">GET HELP NOW!</a>
+  <button class="nav-cta" id="open-contact-form-nav">GET HELP NOW!</button>
   <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
@@ -793,7 +793,7 @@
   <a href="#real-world" class="nav-mobile-link">Cases</a>
   <a href="#scenario" class="nav-mobile-link">Scenarios</a>
   <a href="#authority" class="nav-mobile-link">About</a>
-  <a href="#cta" class="nav-mobile-cta nav-mobile-link">GET HELP NOW!</a>
+  <button class="nav-mobile-cta nav-mobile-link" id="open-contact-form-mobile">GET HELP NOW!</button>
 </div>
 
 <!-- HERO SLIDER -->
@@ -1980,6 +1980,8 @@ gsap.from('.dont-col .rule-item', {
 (function(){
   const modal    = document.getElementById('contact-modal');
   const openBtn  = document.getElementById('open-contact-form');
+  const openBtnNav    = document.getElementById('open-contact-form-nav');
+  const openBtnMobile = document.getElementById('open-contact-form-mobile');
   const closeBtn = document.getElementById('close-contact-form');
   const form     = document.getElementById('contact-form');
   const success  = document.getElementById('contact-success');
@@ -1998,6 +2000,8 @@ gsap.from('.dont-col .rule-item', {
   };
 
   openBtn.addEventListener('click', openModal);
+  if (openBtnNav) openBtnNav.addEventListener('click', openModal);
+  if (openBtnMobile) openBtnMobile.addEventListener('click', openModal);
   closeBtn.addEventListener('click', closeModal);
   modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.style.display === 'flex') closeModal(); });
