@@ -122,7 +122,6 @@
     }
 
     /* ABOUT JJ SECTION */
-    /* ABOUT JJ SECTION */
     #about-jj {
       background: var(--white);
       padding: 0;
@@ -155,7 +154,7 @@
     .about-jj-img[data-step="0"] {
       width: clamp(220px, 26vw, 360px);
       left: 5%; top: 50%;
-      transform: translateY(-50%);
+      /* yPercent: -50 set by GSAP to avoid transform conflict */
     }
     .about-jj-img[data-step="1"] {
       width: clamp(200px, 24vw, 320px);
@@ -202,6 +201,7 @@
       color: var(--blue);
       line-height: 1.0;
       letter-spacing: 0.02em;
+      text-transform: uppercase;
       margin-bottom: 28px;
     }
     .about-jj-body {
@@ -2412,11 +2412,11 @@ ctaTl
   const jjImgs = gsap.utils.toArray('.about-jj-img');
   if (!jjImgs.length) return;
 
-  // All images + text hidden at start (GSAP controls reveal)
   gsap.set(jjImgs, { transformPerspective: 1000, opacity: 0 });
+  // img[0] uses top:50% — GSAP owns transforms so we set yPercent here (not in CSS)
+  gsap.set(jjImgs[0], { yPercent: -50 });
   gsap.set('.about-jj-text-col', { opacity: 0 });
 
-  // Reveal an image with a minimal flip-in
   function revealJJ(img) {
     gsap.fromTo(img,
       { opacity: 0, rotateY: 14 },
@@ -2426,49 +2426,37 @@ ctaTl
 
   if (window.innerWidth > 660) {
     const bgImg = document.querySelector('.about-jj-bg-logo-wrap img');
-    if (bgImg) {
-      gsap.set(bgImg, { xPercent: -50, yPercent: -50, x: '-40vw' });
-    }
+    if (bgImg) gsap.set(bgImg, { xPercent: -50, yPercent: -50, x: '-40vw' });
 
     let shown = [false, false, false, false];
 
-    // ── Pin for 300vh (avatar already shown, 3 more images × 100vh) ──
+    // Single ScrollTrigger for pin + all scroll logic
+    // (keeping everything in one ST guarantees onUpdate progress is correct)
     ScrollTrigger.create({
       trigger: '#about-jj',
       start: 'top top',
       end: '+=300vh',
       pin: true,
       anticipatePin: 1,
+
       onEnter: () => {
-        // Avatar + text appear when section pins
         revealJJ(jjImgs[0]);
         shown[0] = true;
         gsap.to('.about-jj-text-col', { opacity: 1, duration: 0.6, ease: 'power2.out', delay: 0.15 });
-      }
-    });
+      },
 
-    // ── Logo drifts left → right during pin ──
-    if (bgImg) {
-      gsap.to(bgImg, {
-        x: '40vw', ease: 'none',
-        scrollTrigger: { trigger: '#about-jj', start: 'top top', end: '+=300vh', scrub: 3 }
-      });
-    }
-
-    // ── Images 2/3/4 accumulate on scroll ──
-    ScrollTrigger.create({
-      trigger: '#about-jj',
-      start: 'top top',
-      end: '+=300vh',
       onUpdate: (self) => {
-        if (self.progress >= 0.30 && !shown[1]) { shown[1] = true; revealJJ(jjImgs[1]); }
-        if (self.progress >= 0.62 && !shown[2]) { shown[2] = true; revealJJ(jjImgs[2]); }
-        if (self.progress >= 0.92 && !shown[3]) { shown[3] = true; revealJJ(jjImgs[3]); }
+        // Logo drifts left → right with scroll
+        if (bgImg) gsap.set(bgImg, { x: (-40 + self.progress * 80) + 'vw' });
+
+        // Images appear one by one
+        if (!shown[1] && self.progress >= 0.28) { shown[1] = true; revealJJ(jjImgs[1]); }
+        if (!shown[2] && self.progress >= 0.58) { shown[2] = true; revealJJ(jjImgs[2]); }
+        if (!shown[3] && self.progress >= 0.88) { shown[3] = true; revealJJ(jjImgs[3]); }
       }
     });
 
   } else {
-    // Mobile: show avatar + text immediately
     gsap.set(jjImgs[0], { opacity: 1 });
     gsap.to('.about-jj-text-col', { opacity: 1, duration: 0.5, ease: 'power2.out',
       scrollTrigger: { trigger: '#about-jj', start: 'top 80%', once: true }
