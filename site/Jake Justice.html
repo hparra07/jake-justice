@@ -1628,19 +1628,17 @@ function HeroSlider() {
       {/* Overlay: V shapes + caption — fades out/in; never animates position */}
       <div ref={overlayRef} style={{position:'absolute',inset:0,zIndex:5,pointerEvents:'none',opacity:0}}>
 
-        {/* V diagonals — desktop only */}
-        {window.innerWidth > 660 && <>
+        {/* V diagonals */}
         <div ref={diagLRef} style={{
           position:'absolute',inset:0,
           background: SLIDES[0].diagBg,
-          clipPath:'polygon(0 35%, 0 100%, 44% 100%)'
+          clipPath: window.innerWidth<=660 ? 'polygon(0 88%, 0 100%, 10% 100%)' : 'polygon(0 35%, 0 100%, 44% 100%)'
         }}/>
         <div ref={diagRRef} style={{
           position:'absolute',inset:0,
           background: SLIDES[0].diagBg,
-          clipPath:'polygon(100% 35%, 100% 100%, 56% 100%)'
+          clipPath: window.innerWidth<=660 ? 'polygon(100% 88%, 100% 100%, 90% 100%)' : 'polygon(100% 35%, 100% 100%, 56% 100%)'
         }}/>
-        </>}
 
         {/* Caption card — fixed color, only text changes */}
         <div style={{
