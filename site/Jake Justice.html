@@ -1629,12 +1629,12 @@ function HeroSlider() {
         <div ref={diagLRef} style={{
           position:'absolute',inset:0,
           background: SLIDES[0].diagBg,
-          clipPath:'polygon(0 35%, 0 100%, 44% 100%)'
+          clipPath: window.innerWidth<=660 ? 'polygon(0 60%, 0 100%, 30% 100%)' : 'polygon(0 35%, 0 100%, 44% 100%)'
         }}/>
         <div ref={diagRRef} style={{
           position:'absolute',inset:0,
           background: SLIDES[0].diagBg,
-          clipPath:'polygon(100% 35%, 100% 100%, 56% 100%)'
+          clipPath: window.innerWidth<=660 ? 'polygon(100% 60%, 100% 100%, 70% 100%)' : 'polygon(100% 35%, 100% 100%, 56% 100%)'
         }}/>
 
         {/* Caption card — fixed color, only text changes */}
@@ -1674,9 +1674,9 @@ function HeroSlider() {
       {[{side:'left',fn:back,path:'M19 12H5M12 19l-7-7 7-7'},{side:'right',fn:next,path:'M5 12h14M12 5l7 7-7 7'}].map(({side,fn,path})=>(
         <button key={side} onClick={fn} aria-label={side} style={{
           position:'absolute',
-          [side]:'calc(50% - min(250px,39vw) - 72px)',
+          [side]: window.innerWidth<=660 ? '12px' : 'calc(50% - min(250px,39vw) - 72px)',
           bottom:'calc(8% + 18px)',
-          zIndex:10,width:52,height:52,borderRadius:0,
+          zIndex:10,width:window.innerWidth<=660?40:52,height:window.innerWidth<=660?40:52,borderRadius:0,
           background:'#F40026',border:'none',cursor:'pointer',
           display:'flex',alignItems:'center',justifyContent:'center',
           transition:'background .2s'
