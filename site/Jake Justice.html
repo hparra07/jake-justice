@@ -911,8 +911,8 @@
     <a href="#brand-gallery">Playbook</a>
     <a href="#real-world">Cases</a>
     <a href="#scenario">Scenarios</a>
-    <a href="#about-jj">Jake Justice</a>
-    <a href="#authority">About</a>
+    <a href="#about-jj">About</a>
+    <a href="#authority">Behind Jake Justice</a>
   </div>
   <button class="nav-cta" id="open-contact-form-nav">GET HELP NOW!</button>
   <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
@@ -931,8 +931,8 @@
   <a href="#brand-gallery" class="nav-mobile-link">Playbook</a>
   <a href="#real-world" class="nav-mobile-link">Cases</a>
   <a href="#scenario" class="nav-mobile-link">Scenarios</a>
-  <a href="#about-jj" class="nav-mobile-link">Jake Justice</a>
-  <a href="#authority" class="nav-mobile-link">About</a>
+  <a href="#about-jj" class="nav-mobile-link">About</a>
+  <a href="#authority" class="nav-mobile-link">Behind Jake Justice</a>
   <button class="nav-mobile-cta nav-mobile-link" id="open-contact-form-mobile">GET HELP NOW!</button>
 </div>
 
@@ -1903,33 +1903,37 @@ gsap.utils.toArray('.board-divider').forEach(el => {
   });
 });
 
-/* ─── CARDS SECTION ──────────────────────────────────────── */
-gsap.from('#cards .section-label', { opacity:0, y:30, duration:0.7, ease:'power3.out',
-  scrollTrigger:{ trigger:'#cards', start:'top 85%', once:true } });
-gsap.from('#cards .section-h2', { opacity:0, y:50, duration:0.9, ease:'power3.out', delay:0.1,
-  scrollTrigger:{ trigger:'#cards', start:'top 85%', once:true } });
-gsap.from('#cards .section-desc', { opacity:0, y:30, duration:0.7, ease:'power3.out', delay:0.2,
-  scrollTrigger:{ trigger:'#cards', start:'top 85%', once:true } });
-gsap.from('#card-app', { opacity:0, y:60, scale:0.92, duration:1.1, ease:'back.out(1.4)', delay:0.3,
-  scrollTrigger:{ trigger:'#cards', start:'top 85%', once:true } });
+/* ─── SECTION ENTRANCE ANIMATIONS (registered after full load) ── */
+window.addEventListener('load', function() {
+  ScrollTrigger.refresh();
 
-/* ─── PLAYBOOK ────────────────────────────────────────────── */
-gsap.from('.playbook-header .authority-pill', { opacity:0, y:-20, scale:0.7, duration:0.6, ease:'back.out(2)',
-  scrollTrigger:{ trigger:'#playbook', start:'top 85%', once:true } });
-gsap.from('.playbook-header .section-h2', { opacity:0, y:50, duration:0.9, ease:'power3.out', delay:0.15,
-  scrollTrigger:{ trigger:'#playbook', start:'top 85%', once:true } });
-gsap.from('.playbook-subtitle', { opacity:0, y:25, duration:0.7, ease:'power3.out', delay:0.3,
-  scrollTrigger:{ trigger:'#playbook', start:'top 85%', once:true } });
+  /* CARDS */
+  gsap.from('#cards .section-label', { opacity:0, y:30, duration:0.7, ease:'power3.out',
+    scrollTrigger:{ trigger:'#cards', start:'top 85%', once:true } });
+  gsap.from('#cards .section-h2', { opacity:0, y:50, duration:0.9, ease:'power3.out', delay:0.1,
+    scrollTrigger:{ trigger:'#cards', start:'top 85%', once:true } });
+  gsap.from('#cards .section-desc', { opacity:0, y:30, duration:0.7, ease:'power3.out', delay:0.2,
+    scrollTrigger:{ trigger:'#cards', start:'top 85%', once:true } });
+  gsap.from('#card-app', { opacity:0, y:60, scale:0.92, duration:1.1, ease:'back.out(1.4)', delay:0.3,
+    scrollTrigger:{ trigger:'#cards', start:'top 85%', once:true } });
 
-/* ─── DO / DON'T ─────────────────────────────────────────── */
-gsap.from(['.do-col .rules-col-pill','.do-col .rules-col-title'], { opacity:0, x:-60, duration:0.7, ease:'power3.out',
-  scrollTrigger:{ trigger:'.rules-grid', start:'top 85%', once:true } });
-gsap.from(['.dont-col .rules-col-pill','.dont-col .rules-col-title'], { opacity:0, x:60, duration:0.7, ease:'power3.out',
-  scrollTrigger:{ trigger:'.rules-grid', start:'top 85%', once:true } });
-gsap.from('.do-col .rule-item', { opacity:0, x:-40, stagger:0.08, duration:0.6, ease:'power3.out', delay:0.2,
-  scrollTrigger:{ trigger:'.rules-grid', start:'top 85%', once:true } });
-gsap.from('.dont-col .rule-item', { opacity:0, x:40, stagger:0.08, duration:0.6, ease:'power3.out', delay:0.2,
-  scrollTrigger:{ trigger:'.rules-grid', start:'top 85%', once:true } });
+  /* PLAYBOOK */
+  gsap.from('.playbook-header .authority-pill', { opacity:0, y:-20, scale:0.7, duration:0.6, ease:'back.out(2)',
+    scrollTrigger:{ trigger:'#playbook', start:'top 85%', once:true } });
+  gsap.from('.playbook-header .section-h2', { opacity:0, y:50, duration:0.9, ease:'power3.out', delay:0.15,
+    scrollTrigger:{ trigger:'#playbook', start:'top 85%', once:true } });
+  gsap.from('.playbook-subtitle', { opacity:0, y:25, duration:0.7, ease:'power3.out', delay:0.3,
+    scrollTrigger:{ trigger:'#playbook', start:'top 85%', once:true } });
+
+  /* DO / DON'T */
+  gsap.from(['.do-col .rules-col-pill','.do-col .rules-col-title'], { opacity:0, x:-60, duration:0.7, ease:'power3.out',
+    scrollTrigger:{ trigger:'.rules-grid', start:'top 85%', once:true } });
+  gsap.from(['.dont-col .rules-col-pill','.dont-col .rules-col-title'], { opacity:0, x:60, duration:0.7, ease:'power3.out',
+    scrollTrigger:{ trigger:'.rules-grid', start:'top 85%', once:true } });
+  gsap.from('.do-col .rule-item', { opacity:0, x:-40, stagger:0.08, duration:0.6, ease:'power3.out', delay:0.2,
+    scrollTrigger:{ trigger:'.rules-grid', start:'top 85%', once:true } });
+  gsap.from('.dont-col .rule-item', { opacity:0, x:40, stagger:0.08, duration:0.6, ease:'power3.out', delay:0.2,
+    scrollTrigger:{ trigger:'.rules-grid', start:'top 85%', once:true } });
 
 /* ─── PLAYBOOK GALLERY SLIDER ────────────────────────── */
 (function(){
@@ -2267,11 +2271,11 @@ gsap.from('.dont-col .rule-item', { opacity:0, x:40, stagger:0.08, duration:0.6,
   links.forEach(l => l.addEventListener('click', closeMenu));
 })();
 
-/* ─── SCENARIO ───────────────────────────────────────────── */
-gsap.from('.scenario-header-centered', { opacity:0, y:50, duration:0.9, ease:'power3.out',
-  scrollTrigger:{ trigger:'#scenario', start:'top 85%', once:true } });
-gsap.from('#scenario-app', { opacity:0, y:60, scale:0.94, duration:1.1, ease:'back.out(1.4)', delay:0.2,
-  scrollTrigger:{ trigger:'#scenario', start:'top 85%', once:true } });
+  /* SCENARIO */
+  gsap.from('.scenario-header-centered', { opacity:0, y:50, duration:0.9, ease:'power3.out',
+    scrollTrigger:{ trigger:'#scenario', start:'top 85%', once:true } });
+  gsap.from('#scenario-app', { opacity:0, y:60, scale:0.94, duration:1.1, ease:'back.out(1.4)', delay:0.2,
+    scrollTrigger:{ trigger:'#scenario', start:'top 85%', once:true } });
 
 /* ─── CASES: SCROLL PIN + DRAG (desktop) / ARROWS (mobile) ── */
 const casesSection = document.getElementById('cases-section');
@@ -2353,47 +2357,49 @@ if (window.innerWidth > 900) {
   });
 }
 
-/* ─── AUTHORITY ──────────────────────────────────────────── */
-gsap.from('.authority-photo-wrap', { opacity:0, x:-70, duration:1.0, ease:'power3.out',
-  scrollTrigger:{ trigger:'#authority', start:'top 85%', once:true } });
-gsap.from('.authority-accent', { opacity:0, scale:0, duration:0.7, ease:'back.out(1.8)', delay:0.1,
-  scrollTrigger:{ trigger:'#authority', start:'top 85%', once:true } });
-gsap.from('#authority .section-h2', { opacity:0, y:40, duration:0.9, ease:'power3.out', delay:0.2,
-  scrollTrigger:{ trigger:'#authority', start:'top 85%', once:true } });
-gsap.from('#authority p', { opacity:0, y:25, stagger:0.1, duration:0.7, ease:'power3.out', delay:0.3,
-  scrollTrigger:{ trigger:'#authority', start:'top 85%', once:true } });
+  /* AUTHORITY */
+  gsap.from('.authority-photo-wrap', { opacity:0, x:-70, duration:1.0, ease:'power3.out',
+    scrollTrigger:{ trigger:'#authority', start:'top 85%', once:true } });
+  gsap.from('.authority-accent', { opacity:0, scale:0, duration:0.7, ease:'back.out(1.8)', delay:0.1,
+    scrollTrigger:{ trigger:'#authority', start:'top 85%', once:true } });
+  gsap.from('#authority .section-h2', { opacity:0, y:40, duration:0.9, ease:'power3.out', delay:0.2,
+    scrollTrigger:{ trigger:'#authority', start:'top 85%', once:true } });
+  gsap.from('#authority p', { opacity:0, y:25, stagger:0.1, duration:0.7, ease:'power3.out', delay:0.3,
+    scrollTrigger:{ trigger:'#authority', start:'top 85%', once:true } });
 
-/* Stats count-up */
-gsap.utils.toArray('.stat-num').forEach(el => {
-  const raw = el.textContent;
-  const num = parseFloat(raw.replace(/[^0-9.]/g, ''));
-  const suffix = raw.replace(/[0-9.]/g, '');
-  if (!isNaN(num) && num > 0) {
-    const obj = { val: 0 };
-    gsap.to(obj, {
-      val: num, duration: 2.2, ease: 'power2.out',
-      onUpdate: () => { el.textContent = Math.round(obj.val) + suffix; },
-      scrollTrigger: { trigger: el, start: 'top 85%', once: true }
-    });
-  }
-});
+  /* Stats count-up */
+  gsap.utils.toArray('.stat-num').forEach(el => {
+    const raw = el.textContent;
+    const num = parseFloat(raw.replace(/[^0-9.]/g, ''));
+    const suffix = raw.replace(/[0-9.]/g, '');
+    if (!isNaN(num) && num > 0) {
+      const obj = { val: 0 };
+      gsap.to(obj, {
+        val: num, duration: 2.2, ease: 'power2.out',
+        onUpdate: () => { el.textContent = Math.round(obj.val) + suffix; },
+        scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+      });
+    }
+  });
 
-gsap.from('.trust-badge', { opacity:0, x:40, stagger:0.1, duration:0.6, ease:'back.out(1.4)',
-  scrollTrigger:{ trigger:'.trust-badges', start:'top 85%', once:true } });
-gsap.from('.stat-item', { opacity:0, y:35, stagger:0.08, duration:0.6, ease:'power3.out',
-  scrollTrigger:{ trigger:'.stats-row', start:'top 85%', once:true } });
+  gsap.from('.trust-badge', { opacity:0, x:40, stagger:0.1, duration:0.6, ease:'back.out(1.4)',
+    scrollTrigger:{ trigger:'.trust-badges', start:'top 85%', once:true } });
+  gsap.from('.stat-item', { opacity:0, y:35, stagger:0.08, duration:0.6, ease:'power3.out',
+    scrollTrigger:{ trigger:'.stats-row', start:'top 85%', once:true } });
 
-/* ─── CTA ────────────────────────────────────────────────── */
-gsap.from('.cta-badge', { opacity:0, y:-25, scale:0.7, duration:0.6, ease:'back.out(2.5)',
-  scrollTrigger:{ trigger:'#cta', start:'top 85%', once:true } });
-gsap.from('.cta-h2', { opacity:0, y:50, duration:1.0, ease:'power3.out', delay:0.1,
-  scrollTrigger:{ trigger:'#cta', start:'top 85%', once:true } });
-gsap.from('.cta-sub', { opacity:0, y:30, stagger:0.12, duration:0.8, ease:'power3.out', delay:0.25,
-  scrollTrigger:{ trigger:'#cta', start:'top 85%', once:true } });
-gsap.from('.cta-btns', { opacity:0, y:25, scale:0.9, duration:0.7, ease:'back.out(1.8)', delay:0.4,
-  scrollTrigger:{ trigger:'#cta', start:'top 85%', once:true } });
-gsap.from('.cta-free', { opacity:0, duration:0.5, delay:0.55,
-  scrollTrigger:{ trigger:'#cta', start:'top 85%', once:true } });
+  /* CTA */
+  gsap.from('.cta-badge', { opacity:0, y:-25, scale:0.7, duration:0.6, ease:'back.out(2.5)',
+    scrollTrigger:{ trigger:'#cta', start:'top 85%', once:true } });
+  gsap.from('.cta-h2', { opacity:0, y:50, duration:1.0, ease:'power3.out', delay:0.1,
+    scrollTrigger:{ trigger:'#cta', start:'top 85%', once:true } });
+  gsap.from('.cta-sub', { opacity:0, y:30, stagger:0.12, duration:0.8, ease:'power3.out', delay:0.25,
+    scrollTrigger:{ trigger:'#cta', start:'top 85%', once:true } });
+  gsap.from('.cta-btns', { opacity:0, y:25, scale:0.9, duration:0.7, ease:'back.out(1.8)', delay:0.4,
+    scrollTrigger:{ trigger:'#cta', start:'top 85%', once:true } });
+  gsap.from('.cta-free', { opacity:0, duration:0.5, delay:0.55,
+    scrollTrigger:{ trigger:'#cta', start:'top 85%', once:true } });
+
+}); // end window load
 
 /* ─── ABOUT JJ SCROLL ─────────────────────────────────────── */
 (function(){
