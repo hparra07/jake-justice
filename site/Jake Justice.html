@@ -46,23 +46,14 @@
       padding: 18px 80px;
       background: var(--white); border-bottom: 2px solid var(--light-gray);
     }
-    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; position: relative; overflow: hidden; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; position: relative; overflow: visible; }
     .nav-logo-text { font-family: 'JetBrains Mono', sans-serif; font-size: 26px; color: var(--white); letter-spacing: 0.08em; }
     .nav-logo-text span { color: var(--red); }
-    /* Logo shine sweep on hover */
-    .nav-logo img { transition: transform 0.45s cubic-bezier(0.34,1.56,0.64,1), filter 0.3s ease; }
-    .nav-logo:hover img { transform: scale(1.1); filter: brightness(1.2) drop-shadow(0 0 8px rgba(0,82,148,0.45)); }
-    .nav-logo::after {
-      content: ''; position: absolute; top: -20%; left: -80%;
-      width: 45%; height: 140%;
-      background: linear-gradient(110deg, transparent 25%, rgba(255,255,255,0.75) 50%, transparent 75%);
-      transform: skewX(-15deg); pointer-events: none;
-    }
-    .nav-logo:hover::after { animation: nav-logo-shine 0.5s ease forwards; }
-    @keyframes nav-logo-shine { to { left: 130%; } }
+    .nav-logo img { transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), filter 0.3s ease; }
+    .nav-logo:hover img { transform: scale(1.08); filter: brightness(1.15) drop-shadow(0 0 7px rgba(0,82,148,0.4)); }
     /* Nav links */
     .nav-links { display: flex; gap: 8px; position: absolute; left: 50%; transform: translateX(-50%); }
-    .nav-links a { color: var(--blue); text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 600; letter-spacing: 0.04em; text-transform: none; padding: 6px 14px; transition: background 0.18s, color 0.18s; }
+    .nav-links a { color: var(--blue); text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 600; letter-spacing: 0.04em; text-transform: none; padding: 6px 14px; transition: background 0.18s, color 0.18s; position: relative; overflow: visible; }
     .nav-links a:hover { background: var(--red); color: var(--white); }
     .nav-cta { background: var(--red); color: var(--white); border: none; padding: 14px 24px; font-family: 'JetBrains Mono', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 0; text-transform: uppercase; cursor: pointer; transition: background .2s; text-decoration: none; }
     .nav-cta:hover { background: #c0002a; }
@@ -1875,7 +1866,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 /* ─── SMOOTH SCROLL (Lenis + GSAP) ──────────────────────── */
 const lenis = new Lenis({
-  duration: 1.4,
+  duration: 0.85,
   easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
   smoothWheel: true,
   smoothTouch: false,
@@ -2502,6 +2493,60 @@ gsap.timeline({ scrollTrigger:{ trigger:'#cta', start:'top 70%', once:true } })
       overwrite: true
     });
   });
+})();
+
+/* ─── NAV SPARKLE HOVER ──────────────────────────────────── */
+(function(){
+  // Shoots a ✦ star diagonally from the hovered element — like the comet effect in the image
+  function shootStar(parent, opts) {
+    const s = document.createElement('span');
+    s.textContent = opts.char || '✦';
+    Object.assign(s.style, {
+      position: 'absolute',
+      top:  (opts.top  ?? 0) + 'px',
+      left: (opts.left ?? 0) + 'px',
+      fontSize:  (opts.size ?? 13) + 'px',
+      color:     opts.color ?? '#ffd700',
+      textShadow: '0 0 6px #fff, 0 0 14px rgba(255,220,50,0.9)',
+      lineHeight: '1',
+      pointerEvents: 'none',
+      zIndex: '50',
+      userSelect: 'none',
+    });
+    parent.appendChild(s);
+
+    // Pop in, then shoot diagonally up-right and fade out
+    gsap.timeline({ onComplete: () => s.remove() })
+      .fromTo(s,
+        { scale: 0, opacity: 0, rotation: -40, x: 0, y: 0 },
+        { scale: 1.4, opacity: 1, rotation: 15, duration: 0.18, ease: 'back.out(3)' }
+      )
+      .to(s, {
+        scale: 0.3, opacity: 0, rotation: 50,
+        x: opts.dx ?? 18, y: opts.dy ?? -18,
+        duration: 0.28, ease: 'power2.in'
+      });
+  }
+
+  // Nav links — star pops at top-right corner on enter
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('mouseenter', () => {
+      shootStar(link, {
+        top: -10, left: link.offsetWidth - 6,
+        size: 11, dx: 12, dy: -14
+      });
+    });
+  });
+
+  // Nav logo — two stars: one big, one tiny trailing behind
+  const logo = document.querySelector('.nav-logo');
+  if (logo) {
+    logo.addEventListener('mouseenter', () => {
+      const w = logo.offsetWidth, h = logo.offsetHeight;
+      shootStar(logo, { top: -8,      left: w - 8,      size: 14, color: '#fff',   dx: 16, dy: -18 });
+      shootStar(logo, { top: h * 0.2, left: w * 0.55,   size: 8,  color: '#ffd700', char: '⋆', dx: 10, dy: -10 });
+    });
+  }
 })();
 </script>
 
