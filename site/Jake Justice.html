@@ -145,28 +145,16 @@
       opacity: 0.08;
     }
     /* Each image at its own absolute position */
+    /* All images share the same slot — they replace each other as you scroll */
     .about-jj-img {
       position: absolute;
       opacity: 0;
       z-index: 2;
       height: auto;
-    }
-    .about-jj-img[data-step="0"] {
-      width: clamp(220px, 26vw, 360px);
-      left: 5%; top: 50%;
-      /* yPercent: -50 set by GSAP to avoid transform conflict */
-    }
-    .about-jj-img[data-step="1"] {
-      width: clamp(200px, 24vw, 320px);
-      left: 32%; top: 4%;
-    }
-    .about-jj-img[data-step="2"] {
-      width: clamp(210px, 25vw, 340px);
-      left: 4%; bottom: 5%;
-    }
-    .about-jj-img[data-step="3"] {
-      width: clamp(190px, 22vw, 300px);
-      left: 30%; bottom: 4%;
+      left: 5%;
+      top: 50%;
+      width: clamp(200px, 26vw, 360px);
+      /* yPercent: -50 set by GSAP on all images */
     }
     /* Text column — fixed, shifted toward center */
     .about-jj-text-col {
@@ -825,8 +813,8 @@
       /* ── ABOUT JJ ── */
       #about-jj { height: auto; padding: 64px 24px; display: flex; flex-direction: column; align-items: center; gap: 36px; }
       .about-jj-bg-logo-wrap { display: none; }
-      .about-jj-img[data-step="0"] { position: relative; display: block; width: 200px; left: auto; top: auto; transform: none; margin: 0 auto; }
-      .about-jj-img[data-step="1"], .about-jj-img[data-step="2"], .about-jj-img[data-step="3"] { display: none; }
+      .about-jj-img { position: relative; left: auto; top: auto; width: 200px; margin: 0 auto; }
+      .about-jj-img:not([data-step="0"]) { display: none; }
       .about-jj-text-col { position: relative; right: auto; top: auto; transform: none; width: 100%; max-width: 100%; }
 
       /* ── DO & DON'T ── */
@@ -2412,17 +2400,18 @@ ctaTl
   const jjImgs = gsap.utils.toArray('.about-jj-img');
   if (!jjImgs.length) return;
 
-  // Init: all images hidden, img[0] vertically centered via GSAP (not CSS transform)
-  gsap.set(jjImgs, { transformPerspective: 1000, opacity: 0 });
-  gsap.set(jjImgs[0], { yPercent: -50 });
+  // All images: hidden, centered vertically (GSAP owns the transform)
+  gsap.set(jjImgs, { transformPerspective: 1000, opacity: 0, yPercent: -50 });
   gsap.set('.about-jj-text-col', { opacity: 0 });
 
   if (window.innerWidth > 660) {
     const bgImg = document.querySelector('.about-jj-bg-logo-wrap img');
     if (bgImg) gsap.set(bgImg, { xPercent: -50, yPercent: -50 });
 
-    // Scrub timeline: every animation is directly tied to scroll position.
-    // Timeline duration = 3 units → maps over 300vh of pinned scroll (1 unit ≈ 100vh).
+    // Scrub timeline (duration=3 → 1 unit ≈ 100vh of the 300vh pin)
+    // Images share the same slot and replace each other:
+    //   - new image enters from below (y: 40 → 0) + flip
+    //   - old image exits upward (y: 0 → -40) + fade out
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: '#about-jj',
@@ -2434,20 +2423,37 @@ ctaTl
       }
     });
 
-    // Background logo drifts left → right across the full scroll
+    // Background logo drifts left → right
     if (bgImg) tl.fromTo(bgImg, { x: '-40vw' }, { x: '40vw', ease: 'none', duration: 3 }, 0);
 
-    // Avatar + text col appear immediately when section pins (~first 10vh of scroll)
+    // Text col fades in at start
     tl.fromTo('.about-jj-text-col', { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.1);
-    tl.fromTo(jjImgs[0], { opacity: 0, rotateY: 14 }, { opacity: 1, rotateY: 0, duration: 0.3 }, 0.15);
 
-    // Comic books appear one by one as user scrolls (~every 100vh)
-    tl.fromTo(jjImgs[1], { opacity: 0, rotateY: 14 }, { opacity: 1, rotateY: 0, duration: 0.25 }, 1.0);
-    tl.fromTo(jjImgs[2], { opacity: 0, rotateY: 14 }, { opacity: 1, rotateY: 0, duration: 0.25 }, 1.9);
-    tl.fromTo(jjImgs[3], { opacity: 0, rotateY: 14 }, { opacity: 1, rotateY: 0, duration: 0.25 }, 2.7);
+    // ── img[0]: enter → exit ──
+    tl.fromTo(jjImgs[0],
+      { opacity: 0, y: 40, rotateY: 12 },
+      { opacity: 1, y: 0,  rotateY: 0,  duration: 0.3 }, 0.15);
+    tl.to(jjImgs[0], { opacity: 0, y: -40, duration: 0.25 }, 0.85);
+
+    // ── img[1]: enter → exit ──
+    tl.fromTo(jjImgs[1],
+      { opacity: 0, y: 40, rotateY: 12 },
+      { opacity: 1, y: 0,  rotateY: 0,  duration: 0.3 }, 0.9);
+    tl.to(jjImgs[1], { opacity: 0, y: -40, duration: 0.25 }, 1.65);
+
+    // ── img[2]: enter → exit ──
+    tl.fromTo(jjImgs[2],
+      { opacity: 0, y: 40, rotateY: 12 },
+      { opacity: 1, y: 0,  rotateY: 0,  duration: 0.3 }, 1.7);
+    tl.to(jjImgs[2], { opacity: 0, y: -40, duration: 0.25 }, 2.45);
+
+    // ── img[3]: enter, stays until end ──
+    tl.fromTo(jjImgs[3],
+      { opacity: 0, y: 40, rotateY: 12 },
+      { opacity: 1, y: 0,  rotateY: 0,  duration: 0.3 }, 2.5);
 
   } else {
-    gsap.set(jjImgs[0], { opacity: 1 });
+    gsap.set(jjImgs[0], { opacity: 1, yPercent: 0 });
     gsap.to('.about-jj-text-col', { opacity: 1, duration: 0.5, ease: 'power2.out',
       scrollTrigger: { trigger: '#about-jj', start: 'top 80%', once: true }
     });
