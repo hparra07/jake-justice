@@ -729,8 +729,9 @@
 
       /* ── CASES ── */
       #cases-section { overflow: hidden; }
-      .cases-pin-wrap { height: auto !important; overflow: hidden; padding: 64px 0 0; gap: 16px; }
-      .cases-header { padding: 0 24px; text-align: center; }
+      .cases-pin-wrap { height: auto !important; overflow: hidden; padding: 64px 0 0; gap: 16px; align-items: center; }
+      .cases-header { padding: 0 24px; text-align: center; width: 100%; }
+      .cases-header .section-h2 { text-align: center; width: 100%; }
       .cases-header .authority-pill { margin-bottom: 24px; }
       .cases-scroll-hint { display: none; }
       .cases-track { gap: 0; padding: 24px 0 0; }
@@ -759,6 +760,7 @@
       .trust-badge { flex-direction: column; text-align: center; align-items: center; }
 
       /* ── CTA ── */
+      .cta-inner { padding: 40px 24px; }
       .cta-h2 { font-size: clamp(30px, 7.5vw, 42px); }
       .cta-sub { font-size: 16px; }
 
