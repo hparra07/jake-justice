@@ -122,13 +122,12 @@
     }
 
     /* ABOUT JJ SECTION */
-    #about-jj { background: var(--white); padding: 0; }
-    .about-jj-scroll-wrap { height: 500vh; position: relative; }
-    .about-jj-inner {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow: hidden;
+    /* ABOUT JJ SECTION */
+    #about-jj {
+      background: var(--white);
+      padding: 0;
+      position: relative;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -136,27 +135,47 @@
     .about-jj-bg-logo-wrap {
       position: absolute;
       top: 50%;
-      transform: translateY(-50%);
+      left: 0;
       pointer-events: none;
       z-index: 0;
-      will-change: transform;
     }
     .about-jj-bg-logo-wrap img {
-      width: 700px;
+      width: 680px;
       max-width: none;
-      opacity: 0.07;
+      opacity: 0.13;
       display: block;
     }
     .about-jj-grid {
       max-width: 1100px;
       width: 100%;
-      padding: 0 80px;
+      padding: 80px;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 80px;
       align-items: center;
       position: relative;
       z-index: 1;
+    }
+    .about-jj-img-col {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .about-jj-img-stack {
+      position: relative;
+      width: 400px;
+      height: 460px;
+      perspective: 1200px;
+      transform-style: preserve-3d;
+    }
+    .about-jj-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0;
+      backface-visibility: hidden;
     }
     .about-jj-text-col { display: flex; flex-direction: column; }
     .about-jj-eyebrow {
@@ -204,27 +223,6 @@
       padding: 14px 20px;
       background: var(--light-gray);
       border-left: 3px solid var(--red);
-    }
-    .about-jj-img-col {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .about-jj-img-stack {
-      position: relative;
-      width: 400px;
-      height: 460px;
-      perspective: 1200px;
-      transform-style: preserve-3d;
-    }
-    .about-jj-img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      opacity: 0;
-      backface-visibility: hidden;
     }
 
     /* CARDS SECTION */
@@ -820,8 +818,7 @@
       .hero-badge { left: calc(50% - 134px); top: 30px; font-size: 11px; padding: 10px 16px; }
 
       /* ── ABOUT JJ ── */
-      .about-jj-scroll-wrap { height: auto; }
-      .about-jj-inner { position: relative; top: auto; height: auto; padding: 64px 24px; flex-direction: column; align-items: flex-start; justify-content: flex-start; }
+      #about-jj { min-height: auto; padding: 64px 24px; display: block; }
       .about-jj-bg-logo-wrap { display: none; }
       .about-jj-grid { grid-template-columns: 1fr; padding: 0; gap: 48px; }
       .about-jj-img-stack { width: 100%; max-width: 280px; height: 320px; margin: 0 auto; }
@@ -979,32 +976,30 @@
 
 <!-- ABOUT JAKE JUSTICE -->
 <section id="about-jj">
-  <div class="about-jj-scroll-wrap">
-    <div class="about-jj-inner">
-      <div class="about-jj-bg-logo-wrap">
-        <img src="../images/jake-justice-logo-blue.png" alt="">
+  <div class="about-jj-bg-logo-wrap">
+    <img src="../images/jake-justice-logo-blue.png" alt="">
+  </div>
+  <div class="about-jj-grid">
+    <!-- IMAGE LEFT -->
+    <div class="about-jj-img-col">
+      <div class="about-jj-img-stack">
+        <img src="../images/jake-justice-avatar-main.png" alt="Jake Justice" class="about-jj-img">
+        <img src="../images/how-to-talk-dont.png" alt="How To Talk" class="about-jj-img">
+        <img src="../images/where-are-you-going.png" alt="Where Are You Going" class="about-jj-img">
+        <img src="../images/have-the-feelings.png" alt="Have The Feelings" class="about-jj-img">
       </div>
-      <div class="about-jj-grid">
-        <div class="about-jj-text-col">
-          <span class="about-jj-eyebrow">About Jake Justice</span>
-          <p class="about-jj-lead">Jake Justice was created to make the law understandable.</p>
-          <p class="about-jj-body">Most people do not learn their constitutional rights until it is too late — during a traffic stop, an arrest, a school investigation, or a life-changing accusation.</p>
-          <p class="about-jj-body">Created by trial attorney Jacob Stuart, Jr., Jake Justice simplifies complex legal situations into practical, memorable rules designed for real life.</p>
-          <ul class="about-jj-list">
-            <li>No legal jargon.</li>
-            <li>No scare tactics.</li>
-            <li>Just clear information people can actually use.</li>
-          </ul>
-        </div>
-        <div class="about-jj-img-col">
-          <div class="about-jj-img-stack">
-            <img src="../images/jake-justice-avatar-main.png" alt="Jake Justice" class="about-jj-img">
-            <img src="../images/how-to-talk-dont.png" alt="How To Talk" class="about-jj-img">
-            <img src="../images/where-are-you-going.png" alt="Where Are You Going" class="about-jj-img">
-            <img src="../images/have-the-feelings.png" alt="Have The Feelings" class="about-jj-img">
-          </div>
-        </div>
-      </div>
+    </div>
+    <!-- TEXT RIGHT -->
+    <div class="about-jj-text-col">
+      <span class="about-jj-eyebrow">About Jake Justice</span>
+      <p class="about-jj-lead">Jake Justice was created to make the law understandable.</p>
+      <p class="about-jj-body">Most people do not learn their constitutional rights until it is too late — during a traffic stop, an arrest, a school investigation, or a life-changing accusation.</p>
+      <p class="about-jj-body">Created by trial attorney Jacob Stuart, Jr., Jake Justice simplifies complex legal situations into practical, memorable rules designed for real life.</p>
+      <ul class="about-jj-list">
+        <li>No legal jargon.</li>
+        <li>No scare tactics.</li>
+        <li>Just clear information people can actually use.</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -2414,61 +2409,90 @@ ctaTl
 
 /* ─── ABOUT JJ SCROLL ─────────────────────────────────────── */
 (function(){
-  const imgs = gsap.utils.toArray('.about-jj-img');
-  if (!imgs.length) return;
-
-  // Init: first image visible
-  gsap.set(imgs[0], { opacity:1, rotateY:0 });
-  imgs.slice(1).forEach(img => gsap.set(img, { opacity:0, rotateY:90 }));
+  const jjImgs = gsap.utils.toArray('.about-jj-img');
+  if (!jjImgs.length) return;
 
   let currentJJIdx = 0;
+  let lastJJStep   = 0;
 
-  function flipJJImage(newIdx) {
-    if (newIdx === currentJJIdx || newIdx < 0 || newIdx >= imgs.length) return;
-    const outImg = imgs[currentJJIdx];
-    const inImg  = imgs[newIdx];
-    const dir    = newIdx > currentJJIdx ? 1 : -1;
-    const tl     = gsap.timeline();
-    tl.to(outImg,  { rotateY: -90 * dir, opacity:0, duration:0.38, ease:'power2.in' });
-    tl.set(inImg,  { rotateY: 90 * dir, opacity:0 });
-    tl.to(inImg,   { rotateY:0, opacity:1, duration:0.38, ease:'power2.out' }, '-=0.05');
+  // All images hidden; rotateY ready
+  jjImgs.forEach((img, i) => gsap.set(img, { opacity:0, rotateY: i === 0 ? 0 : 90 }));
+
+  function flipJJ(newIdx) {
+    if (newIdx === currentJJIdx) return;
+    const out = jjImgs[currentJJIdx];
+    const inn = jjImgs[newIdx];
+    const dir = newIdx > currentJJIdx ? 1 : -1;
+    const tl  = gsap.timeline();
+    tl.to(out, { rotateY:-90*dir, opacity:0, duration:0.38, ease:'power2.in' });
+    tl.set(inn, { rotateY:90*dir, opacity:0 });
+    tl.to(inn,  { rotateY:0, opacity:1, duration:0.38, ease:'power2.out' }, '-=0.05');
     currentJJIdx = newIdx;
   }
 
-  if (window.innerWidth > 660) {
-    // Moving background logo: left → right
-    const bgWrap = document.querySelector('.about-jj-bg-logo-wrap');
-    if (bgWrap) {
-      gsap.fromTo(bgWrap,
-        { x: '-90vw' },
-        { x: '90vw', ease:'none',
-          scrollTrigger:{
-            trigger: '.about-jj-scroll-wrap',
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: 2
-          }
-        }
-      );
-    }
+  // ── Entry animation (fires when section enters viewport) ──
+  const jjEntryTl = gsap.timeline({
+    paused: true,
+    defaults: { ease:'power3.out' }
+  });
+  jjEntryTl
+    .fromTo(jjImgs[0], { opacity:0, scale:0.85, rotateY:-20 },
+                        { opacity:1, scale:1,    rotateY:0, duration:0.85, ease:'back.out(1.3)' })
+    .from('.about-jj-eyebrow', { opacity:0, y:20, duration:0.45 }, 0.15)
+    .from('.about-jj-lead',    { opacity:0, y:32, duration:0.65 }, 0.25)
+    .from('.about-jj-body',    { opacity:0, y:24, stagger:0.12, duration:0.5 }, 0.38)
+    .from('.about-jj-list li', { opacity:0, x:-24, stagger:0.08, duration:0.4 }, 0.55);
 
-    // Image flip on scroll progress (4 images × 25% each)
-    let lastJJStep = 0;
+  ScrollTrigger.create({
+    trigger: '#about-jj',
+    start: 'top 78%',
+    once: true,
+    onEnter: () => jjEntryTl.play()
+  });
+
+  // ── Desktop: pin + scroll images + logo ──
+  if (window.innerWidth > 660) {
+    // Register y with GSAP (avoids CSS transform conflict)
+    gsap.set('.about-jj-bg-logo-wrap', { yPercent:-50, x:'-100vw' });
+
+    // Pin the section for 400vh of scroll
     ScrollTrigger.create({
-      trigger: '.about-jj-scroll-wrap',
+      trigger: '#about-jj',
       start: 'top top',
-      end: 'bottom bottom',
+      end: '+=400vh',
+      pin: true,
+      anticipatePin: 1,
+    });
+
+    // Logo drifts left → right
+    gsap.to('.about-jj-bg-logo-wrap', {
+      x: '80vw',
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#about-jj',
+        start: 'top top',
+        end: '+=400vh',
+        scrub: 2
+      }
+    });
+
+    // Image flip every 100vh of scroll (4 × 25%)
+    ScrollTrigger.create({
+      trigger: '#about-jj',
+      start: 'top top',
+      end: '+=400vh',
       onUpdate: (self) => {
         const step = Math.min(Math.floor(self.progress * 4), 3);
         if (step !== lastJJStep) {
-          flipJJImage(step);
+          flipJJ(step);
           lastJJStep = step;
         }
       }
     });
+
   } else {
-    // Mobile: show first image, rest hidden
-    gsap.set(imgs[0], { opacity:1, rotateY:0 });
+    // Mobile: show first image directly (no scroll tricks)
+    gsap.set(jjImgs[0], { opacity:1, scale:1, rotateY:0 });
   }
 })();
 </script>
