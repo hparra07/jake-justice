@@ -122,59 +122,41 @@
     }
 
     /* ABOUT JJ SECTION */
-    #about-jj {
-      background: var(--dark);
-      padding: 100px 80px;
-      position: relative;
+    #about-jj { background: var(--white); padding: 0; }
+    .about-jj-scroll-wrap { height: 500vh; position: relative; }
+    .about-jj-inner {
+      position: sticky;
+      top: 0;
+      height: 100vh;
       overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    #about-jj::after {
-      content: 'JJ';
+    .about-jj-bg-logo-wrap {
       position: absolute;
-      right: -40px;
       top: 50%;
       transform: translateY(-50%);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 480px;
-      font-weight: 700;
-      color: rgba(255,255,255,0.025);
-      line-height: 1;
       pointer-events: none;
-      user-select: none;
-      letter-spacing: -0.04em;
+      z-index: 0;
+      will-change: transform;
     }
-    .about-jj-inner {
+    .about-jj-bg-logo-wrap img {
+      width: 700px;
+      max-width: none;
+      opacity: 0.07;
+      display: block;
+    }
+    .about-jj-grid {
       max-width: 1100px;
-      margin: 0 auto;
+      width: 100%;
+      padding: 0 80px;
       display: grid;
-      grid-template-columns: 1fr 1.3fr;
+      grid-template-columns: 1fr 1fr;
       gap: 80px;
       align-items: center;
       position: relative;
       z-index: 1;
-    }
-    .about-jj-logo-col {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-    .about-jj-logo-col::before {
-      content: '';
-      position: absolute;
-      width: 360px;
-      height: 360px;
-      background: radial-gradient(circle, rgba(244,0,38,0.22) 0%, rgba(244,0,38,0) 70%);
-      border-radius: 50%;
-      pointer-events: none;
-    }
-    .about-jj-logo {
-      width: 100%;
-      max-width: 360px;
-      display: block;
-      position: relative;
-      z-index: 1;
-      filter: drop-shadow(0 24px 64px rgba(0,0,0,0.5));
     }
     .about-jj-text-col { display: flex; flex-direction: column; }
     .about-jj-eyebrow {
@@ -188,19 +170,20 @@
       text-transform: uppercase;
       padding: 12px 32px;
       margin-bottom: 32px;
+      align-self: flex-start;
     }
     .about-jj-lead {
       font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(22px, 2.4vw, 38px);
+      font-size: clamp(22px, 2.4vw, 36px);
       font-weight: 700;
-      color: var(--white);
+      color: var(--blue);
       line-height: 1.15;
       margin-bottom: 28px;
     }
     .about-jj-body {
       font-family: 'Alexandria', sans-serif;
       font-size: 17px;
-      color: rgba(255,255,255,0.68);
+      color: var(--dark);
       line-height: 1.85;
       margin-bottom: 20px;
     }
@@ -216,14 +199,32 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 14px;
       font-weight: 700;
-      color: var(--white);
+      color: var(--blue);
       letter-spacing: 0.05em;
+      padding: 14px 20px;
+      background: var(--light-gray);
+      border-left: 3px solid var(--red);
+    }
+    .about-jj-img-col {
       display: flex;
       align-items: center;
-      gap: 0;
-      padding: 14px 20px;
-      background: rgba(255,255,255,0.05);
-      border-left: 3px solid var(--red);
+      justify-content: center;
+    }
+    .about-jj-img-stack {
+      position: relative;
+      width: 400px;
+      height: 460px;
+      perspective: 1200px;
+      transform-style: preserve-3d;
+    }
+    .about-jj-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0;
+      backface-visibility: hidden;
     }
 
     /* CARDS SECTION */
@@ -819,12 +820,11 @@
       .hero-badge { left: calc(50% - 134px); top: 30px; font-size: 11px; padding: 10px 16px; }
 
       /* ── ABOUT JJ ── */
-      #about-jj { padding: 64px 24px; }
-      #about-jj::after { font-size: 240px; right: -20px; }
-      .about-jj-inner { grid-template-columns: 1fr; gap: 48px; }
-      .about-jj-logo { max-width: 240px; margin: 0 auto; }
-      .about-jj-logo-col::before { width: 260px; height: 260px; }
-      .about-jj-text-col { text-align: left; align-items: flex-start; }
+      .about-jj-scroll-wrap { height: auto; }
+      .about-jj-inner { position: relative; top: auto; height: auto; padding: 64px 24px; flex-direction: column; align-items: flex-start; justify-content: flex-start; }
+      .about-jj-bg-logo-wrap { display: none; }
+      .about-jj-grid { grid-template-columns: 1fr; padding: 0; gap: 48px; }
+      .about-jj-img-stack { width: 100%; max-width: 280px; height: 320px; margin: 0 auto; }
       .about-jj-list li { font-size: 13px; }
 
       /* ── DO & DON'T ── */
@@ -979,20 +979,32 @@
 
 <!-- ABOUT JAKE JUSTICE -->
 <section id="about-jj">
-  <div class="about-jj-inner">
-    <div class="about-jj-logo-col">
-      <img src="../images/jake-justice-avatar-main.png" alt="Jake Justice" class="about-jj-logo">
-    </div>
-    <div class="about-jj-text-col">
-      <span class="about-jj-eyebrow">About Jake Justice</span>
-      <p class="about-jj-lead">Jake Justice was created to make the law understandable.</p>
-      <p class="about-jj-body">Most people do not learn their constitutional rights until it is too late — during a traffic stop, an arrest, a school investigation, or a life-changing accusation.</p>
-      <p class="about-jj-body">Created by trial attorney Jacob Stuart, Jr., Jake Justice simplifies complex legal situations into practical, memorable rules designed for real life.</p>
-      <ul class="about-jj-list">
-        <li>No legal jargon.</li>
-        <li>No scare tactics.</li>
-        <li>Just clear information people can actually use.</li>
-      </ul>
+  <div class="about-jj-scroll-wrap">
+    <div class="about-jj-inner">
+      <div class="about-jj-bg-logo-wrap">
+        <img src="../images/jake-justice-logo-blue.png" alt="">
+      </div>
+      <div class="about-jj-grid">
+        <div class="about-jj-text-col">
+          <span class="about-jj-eyebrow">About Jake Justice</span>
+          <p class="about-jj-lead">Jake Justice was created to make the law understandable.</p>
+          <p class="about-jj-body">Most people do not learn their constitutional rights until it is too late — during a traffic stop, an arrest, a school investigation, or a life-changing accusation.</p>
+          <p class="about-jj-body">Created by trial attorney Jacob Stuart, Jr., Jake Justice simplifies complex legal situations into practical, memorable rules designed for real life.</p>
+          <ul class="about-jj-list">
+            <li>No legal jargon.</li>
+            <li>No scare tactics.</li>
+            <li>Just clear information people can actually use.</li>
+          </ul>
+        </div>
+        <div class="about-jj-img-col">
+          <div class="about-jj-img-stack">
+            <img src="../images/jake-justice-avatar-main.png" alt="Jake Justice" class="about-jj-img">
+            <img src="../images/how-to-talk-dont.png" alt="How To Talk" class="about-jj-img">
+            <img src="../images/where-are-you-going.png" alt="Where Are You Going" class="about-jj-img">
+            <img src="../images/have-the-feelings.png" alt="Have The Feelings" class="about-jj-img">
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -2399,6 +2411,66 @@ ctaTl
   .from('.cta-sub', { opacity:0, y:40, duration:0.8, ease:'power3.out' }, '-=0.5')
   .from('.cta-phone', { opacity:0, scale:0.85, duration:0.7, ease:'back.out(1.5)' }, '-=0.4')
   .from('.btn-white', { opacity:0, y:24, duration:0.6, ease:'power3.out' }, '-=0.3');
+
+/* ─── ABOUT JJ SCROLL ─────────────────────────────────────── */
+(function(){
+  const imgs = gsap.utils.toArray('.about-jj-img');
+  if (!imgs.length) return;
+
+  // Init: first image visible
+  gsap.set(imgs[0], { opacity:1, rotateY:0 });
+  imgs.slice(1).forEach(img => gsap.set(img, { opacity:0, rotateY:90 }));
+
+  let currentJJIdx = 0;
+
+  function flipJJImage(newIdx) {
+    if (newIdx === currentJJIdx || newIdx < 0 || newIdx >= imgs.length) return;
+    const outImg = imgs[currentJJIdx];
+    const inImg  = imgs[newIdx];
+    const dir    = newIdx > currentJJIdx ? 1 : -1;
+    const tl     = gsap.timeline();
+    tl.to(outImg,  { rotateY: -90 * dir, opacity:0, duration:0.38, ease:'power2.in' });
+    tl.set(inImg,  { rotateY: 90 * dir, opacity:0 });
+    tl.to(inImg,   { rotateY:0, opacity:1, duration:0.38, ease:'power2.out' }, '-=0.05');
+    currentJJIdx = newIdx;
+  }
+
+  if (window.innerWidth > 660) {
+    // Moving background logo: left → right
+    const bgWrap = document.querySelector('.about-jj-bg-logo-wrap');
+    if (bgWrap) {
+      gsap.fromTo(bgWrap,
+        { x: '-90vw' },
+        { x: '90vw', ease:'none',
+          scrollTrigger:{
+            trigger: '.about-jj-scroll-wrap',
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 2
+          }
+        }
+      );
+    }
+
+    // Image flip on scroll progress (4 images × 25% each)
+    let lastJJStep = 0;
+    ScrollTrigger.create({
+      trigger: '.about-jj-scroll-wrap',
+      start: 'top top',
+      end: 'bottom bottom',
+      onUpdate: (self) => {
+        const step = Math.min(Math.floor(self.progress * 4), 3);
+        if (step !== lastJJStep) {
+          flipJJImage(step);
+          lastJJStep = step;
+        }
+      }
+    });
+  } else {
+    // Mobile: show first image, rest hidden
+    gsap.set(imgs[0], { opacity:1, rotateY:0 });
+  }
+})();
 </script>
 
 </body>
