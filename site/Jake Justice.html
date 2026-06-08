@@ -255,14 +255,16 @@
     /* Mobile: switch to portrait layout */
     @media (max-width: 660px) {
       .card-wrap {
-        width: min(310px, calc(100vw - 48px));
-        height: 480px;
+        width: min(270px, calc(100vw - 48px));
+        height: 390px;
+        margin-top: 24px !important;
+        margin-bottom: 24px !important;
       }
       /* Front: stack vertically instead of side-by-side */
       .card-front .card-center {
         flex-direction: column;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
       }
       .card-center-left {
         align-items: center;
@@ -270,19 +272,22 @@
       }
       .card-title {
         text-align: center !important;
-        font-size: clamp(18px, 6vw, 24px) !important;
+        font-size: clamp(16px, 5.5vw, 20px) !important;
       }
       .card-back .card-title {
-        font-size: clamp(15px, 5vw, 18px) !important;
+        font-size: clamp(13px, 4.5vw, 16px) !important;
       }
-      .card-avatar-img { width: 190px; height: 190px; margin-bottom: 40px; }
-      .card-chance { font-size: 24px; }
-      .card-title { font-size: clamp(20px, 6.5vw, 26px) !important; }
-      .card-explanation { font-size: 14px; }
+      .card-avatar-img { width: 150px; height: 150px; margin-bottom: 16px; }
+      .card-chance { font-size: 20px; }
+      .card-explanation { font-size: 13px; }
       .card-amendment { font-size: 8px; padding: 2px 8px; }
-      /* Reduce modal padding so card has room */
-      #card-modal { padding: 16px 16px !important; }
-      #card-modal h2 { font-size: 20px !important; margin-bottom: 8px !important; }
+      /* Nav buttons & dots */
+      .card-nav-btn { width: 36px; height: 36px; font-size: 16px; }
+      .card-dot { width: 6px; height: 6px; }
+      /* Reduce modal padding so title + card have room */
+      #card-modal { padding: 12px 16px !important; }
+      #card-modal .section-label { margin-bottom: 6px !important; }
+      #card-modal h2 { font-size: 17px !important; margin-bottom: 4px !important; }
       #card-modal > p { display: none; }
     }
     .card-progress { display: flex; gap: 6px; }
