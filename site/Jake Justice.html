@@ -122,16 +122,117 @@
     }
 
     /* ABOUT JJ SECTION */
-    #about-jj { background: var(--white); padding: 100px 80px; }
-    .about-jj-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-    .about-jj-logo-col { display: flex; align-items: center; justify-content: center; }
-    .about-jj-logo { width: 100%; max-width: 380px; display: block; }
-    .about-jj-text-col { display: flex; flex-direction: column; gap: 0; }
-    .about-jj-lead { font-family: 'JetBrains Mono', monospace; font-size: clamp(20px, 2.2vw, 28px); font-weight: 700; color: var(--blue); line-height: 1.2; margin-bottom: 32px; }
-    .about-jj-body { font-family: 'Alexandria', sans-serif; font-size: 17px; color: var(--dark); line-height: 1.8; margin-bottom: 24px; }
-    .about-jj-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
-    .about-jj-list li { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; color: var(--blue); letter-spacing: 0.04em; display: flex; align-items: center; gap: 12px; }
-    .about-jj-list li::before { content: ''; display: inline-block; width: 20px; height: 3px; background: var(--red); flex-shrink: 0; }
+    #about-jj {
+      background: var(--dark);
+      padding: 100px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    #about-jj::after {
+      content: 'JJ';
+      position: absolute;
+      right: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 480px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.025);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: -0.04em;
+    }
+    .about-jj-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 80px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .about-jj-logo-col {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .about-jj-logo-col::before {
+      content: '';
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      background: radial-gradient(circle, rgba(244,0,38,0.22) 0%, rgba(244,0,38,0) 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .about-jj-logo {
+      width: 100%;
+      max-width: 360px;
+      display: block;
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 24px 64px rgba(0,0,0,0.5));
+    }
+    .about-jj-text-col { display: flex; flex-direction: column; }
+    .about-jj-eyebrow {
+      font-family: 'Alexandria', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .about-jj-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 36px;
+      height: 2px;
+      background: var(--red);
+      flex-shrink: 0;
+    }
+    .about-jj-lead {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(22px, 2.4vw, 38px);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 28px;
+    }
+    .about-jj-body {
+      font-family: 'Alexandria', sans-serif;
+      font-size: 17px;
+      color: rgba(255,255,255,0.68);
+      line-height: 1.85;
+      margin-bottom: 20px;
+    }
+    .about-jj-list {
+      list-style: none;
+      padding: 0;
+      margin: 28px 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .about-jj-list li {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 14px 20px;
+      background: rgba(255,255,255,0.05);
+      border-left: 3px solid var(--red);
+    }
 
     /* CARDS SECTION */
     #cards { background: var(--dark); }
@@ -727,10 +828,12 @@
 
       /* ── ABOUT JJ ── */
       #about-jj { padding: 64px 24px; }
-      .about-jj-inner { grid-template-columns: 1fr; gap: 40px; }
-      .about-jj-logo { max-width: 220px; margin: 0 auto; }
-      .about-jj-text-col { text-align: center; align-items: center; }
-      .about-jj-list { align-items: flex-start; text-align: left; }
+      #about-jj::after { font-size: 240px; right: -20px; }
+      .about-jj-inner { grid-template-columns: 1fr; gap: 48px; }
+      .about-jj-logo { max-width: 240px; margin: 0 auto; }
+      .about-jj-logo-col::before { width: 260px; height: 260px; }
+      .about-jj-text-col { text-align: left; align-items: flex-start; }
+      .about-jj-list li { font-size: 13px; }
 
       /* ── DO & DON'T ── */
       .rules-grid { grid-template-columns: 1fr; }
@@ -889,7 +992,8 @@
       <img src="../images/jake-justice-avatar-main.png" alt="Jake Justice" class="about-jj-logo">
     </div>
     <div class="about-jj-text-col">
-      <p class="about-jj-lead">Jake Justice was created to make the law understandable.</p>
+      <span class="about-jj-eyebrow">About Jake Justice</span>
+      <p class="about-jj-lead">Created to make the law understandable.</p>
       <p class="about-jj-body">Most people do not learn their constitutional rights until it is too late — during a traffic stop, an arrest, a school investigation, or a life-changing accusation.</p>
       <p class="about-jj-body">Created by trial attorney Jacob Stuart, Jr., Jake Justice simplifies complex legal situations into practical, memorable rules designed for real life.</p>
       <ul class="about-jj-list">
