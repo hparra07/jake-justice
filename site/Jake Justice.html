@@ -663,15 +663,15 @@
     /* Dark overlay */
     .nav-overlay { display: none; position: fixed; inset: 0; background: rgba(35,31,32,0.65); z-index: 148; opacity: 0; }
     /* Slide panel from right */
-    .nav-mobile { display: flex; flex-direction: column; position: fixed; top: 0; right: 0; bottom: 0; width: min(380px, 88vw); background: var(--blue); z-index: 150; padding: 72px 48px 48px; transform: translateX(100%); pointer-events: none; overflow-y: auto; }
+    .nav-mobile { display: flex; flex-direction: column; position: fixed; top: 0; right: 0; bottom: 0; width: min(380px, 88vw); background: var(--white); border-left: 2px solid var(--light-gray); z-index: 150; padding: 72px 48px 48px; transform: translateX(100%); pointer-events: none; overflow-y: auto; }
     .nav-mobile.open { pointer-events: all; }
     /* Avatar inside panel */
     .nav-mobile-avatar { width: 140px; object-fit: contain; margin-bottom: 40px; display: block; }
     /* Close button */
-    .nav-mobile-close { position: absolute; top: 20px; right: 20px; background: none; border: 2px solid rgba(255,255,255,0.3); color: var(--white); width: 44px; height: 44px; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; transition: all .2s; }
-    .nav-mobile-close:hover { border-color: var(--red); background: var(--red); }
+    .nav-mobile-close { position: absolute; top: 20px; right: 20px; background: none; border: 2px solid rgba(0,82,148,0.3); color: var(--blue); width: 44px; height: 44px; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; transition: all .2s; }
+    .nav-mobile-close:hover { border-color: var(--red); background: var(--red); color: var(--white); }
     /* Nav links */
-    .nav-mobile-link { font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 700; color: var(--white); text-decoration: none; letter-spacing: 0.01em; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.12); display: block; transition: color .2s; }
+    .nav-mobile-link { font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 700; color: var(--blue); text-decoration: none; letter-spacing: 0.01em; padding: 10px 0; border-bottom: 1px solid rgba(0,82,148,0.12); display: block; transition: color .2s; }
     .nav-mobile-link:last-of-type { border-bottom: none; }
     .nav-mobile-link:hover { color: var(--red); }
     /* CTA button at bottom */
@@ -793,7 +793,7 @@
 <!-- Mobile nav panel -->
 <div class="nav-mobile" id="nav-mobile">
   <button class="nav-mobile-close" id="nav-mobile-close">×</button>
-  <img src="uploads/drive-download-20260430T161632Z-3-001/jake-justice-avatar copy.jpeg" alt="Jake Justice" class="nav-mobile-avatar">
+  <img src="../images/jake-justice-avatar-main.png" alt="Jake Justice" class="nav-mobile-avatar">
   <a href="#rules" class="nav-mobile-link">Do & Don't</a>
   <a href="#brand-gallery" class="nav-mobile-link">Playbook</a>
   <a href="#real-world" class="nav-mobile-link">Cases</a>
