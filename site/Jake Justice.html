@@ -13,7 +13,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { overflow-x: hidden; }
@@ -215,10 +214,10 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
       font-weight: 700;
-      color: var(--blue);
+      color: var(--white);
       letter-spacing: 0.05em;
       padding: 12px 18px;
-      background: var(--light-gray);
+      background: var(--blue);
       border-left: 3px solid var(--red);
     }
 
@@ -1864,15 +1863,7 @@ sliderRoot.render(<HeroSlider />);
 <script>
 gsap.registerPlugin(ScrollTrigger);
 
-/* ─── SMOOTH SCROLL (Lenis + GSAP) ──────────────────────── */
-const lenis = new Lenis({
-  duration: 0.5,
-  easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  smoothWheel: true,
-  smoothTouch: false,
-});
-lenis.on('scroll', ScrollTrigger.update);
-gsap.ticker.add(time => { lenis.raf(time * 1000); });
+/* ─── SMOOTH SCROLL: native ──────────────────────────────── */
 gsap.ticker.lagSmoothing(0);
 
 /* ─── NAV ────────────────────────────────────────────────── */
@@ -2604,14 +2595,51 @@ ScrollTrigger.create({
     });
   });
 
-  // Nav logo — two stars: one big, one tiny trailing behind
+  // Nav logo — blue comet trail on hover
   const logo = document.querySelector('.nav-logo');
   if (logo) {
-    logo.addEventListener('mouseenter', () => {
-      const w = logo.offsetWidth, h = logo.offsetHeight;
-      shootStar(logo, { top: -8,      left: w - 8,      size: 14, color: '#fff',   dx: 16, dy: -18 });
-      shootStar(logo, { top: h * 0.2, left: w * 0.55,   size: 8,  color: '#ffd700', char: '⋆', dx: 10, dy: -10 });
-    });
+    logo.style.position = 'relative';
+    logo.style.overflow = 'visible';
+
+    function spawnTrail(logo) {
+      const rect = logo.getBoundingClientRect();
+      const logoRect = logo.getBoundingClientRect();
+      const colors = ['#005294','#1a7fd4','#4aa3f5','#005294','#003d70'];
+      const count = 6;
+      for (let i = 0; i < count; i++) {
+        const dot = document.createElement('span');
+        const size = 4 + Math.random() * 6;
+        const startX = Math.random() * logo.offsetWidth * 0.9;
+        const startY = logo.offsetHeight * (0.1 + Math.random() * 0.8);
+        Object.assign(dot.style, {
+          position: 'absolute',
+          width: size + 'px', height: size + 'px',
+          borderRadius: '50%',
+          background: colors[Math.floor(Math.random() * colors.length)],
+          boxShadow: '0 0 8px 2px rgba(0,100,220,0.6)',
+          top:  startY + 'px',
+          left: startX + 'px',
+          pointerEvents: 'none',
+          zIndex: '50',
+        });
+        logo.appendChild(dot);
+        const angle = -60 + Math.random() * 60; // spread upward
+        const dist  = 22 + Math.random() * 30;
+        const rad   = (angle - 90) * Math.PI / 180;
+        gsap.fromTo(dot,
+          { scale: 0, opacity: 0.9, x: 0, y: 0 },
+          {
+            scale: 1, opacity: 0, x: Math.cos(rad) * dist, y: Math.sin(rad) * dist,
+            duration: 0.45 + Math.random() * 0.3,
+            delay: i * 0.04,
+            ease: 'power2.out',
+            onComplete: () => dot.remove()
+          }
+        );
+      }
+    }
+
+    logo.addEventListener('mouseenter', () => spawnTrail(logo));
   }
 })();
 </script>
