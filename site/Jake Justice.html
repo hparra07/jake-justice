@@ -911,6 +911,7 @@
     <a href="#brand-gallery">Playbook</a>
     <a href="#real-world">Cases</a>
     <a href="#scenario">Scenarios</a>
+    <a href="#about-jj">Jake Justice</a>
     <a href="#authority">About</a>
   </div>
   <button class="nav-cta" id="open-contact-form-nav">GET HELP NOW!</button>
@@ -930,6 +931,7 @@
   <a href="#brand-gallery" class="nav-mobile-link">Playbook</a>
   <a href="#real-world" class="nav-mobile-link">Cases</a>
   <a href="#scenario" class="nav-mobile-link">Scenarios</a>
+  <a href="#about-jj" class="nav-mobile-link">Jake Justice</a>
   <a href="#authority" class="nav-mobile-link">About</a>
   <button class="nav-mobile-cta nav-mobile-link" id="open-contact-form-mobile">GET HELP NOW!</button>
 </div>
@@ -1902,39 +1904,32 @@ gsap.utils.toArray('.board-divider').forEach(el => {
 });
 
 /* ─── CARDS SECTION ──────────────────────────────────────── */
-gsap.set('#cards .section-label', { opacity:0, x:-50, skewX:6 });
-gsap.set('#cards .section-h2',    { opacity:0, y:90,  skewX:-7 });
-gsap.set('#cards .section-desc',  { opacity:0, y:30 });
-gsap.set('#card-app',             { opacity:0, y:110, scale:0.85, rotation:-5 });
-gsap.timeline({ scrollTrigger:{ trigger:'#cards', start:'top 85%', once:true } })
-  .to('#cards .section-label', { opacity:1, x:0, skewX:0, duration:0.6, ease:'power3.out' })
-  .to('#cards .section-h2',    { opacity:1, y:0, skewX:0, duration:0.9, ease:'power3.out' }, '-=0.35')
-  .to('#cards .section-desc',  { opacity:1, y:0, duration:0.7, ease:'power3.out' }, '-=0.5')
-  .to('#card-app',             { opacity:1, y:0, scale:1, rotation:0, duration:1.2, ease:'back.out(1.5)' }, '-=0.4');
+gsap.from('#cards .section-label', { opacity:0, y:30, duration:0.7, ease:'power3.out',
+  scrollTrigger:{ trigger:'#cards', start:'top 85%', once:true } });
+gsap.from('#cards .section-h2', { opacity:0, y:50, duration:0.9, ease:'power3.out', delay:0.1,
+  scrollTrigger:{ trigger:'#cards', start:'top 85%', once:true } });
+gsap.from('#cards .section-desc', { opacity:0, y:30, duration:0.7, ease:'power3.out', delay:0.2,
+  scrollTrigger:{ trigger:'#cards', start:'top 85%', once:true } });
+gsap.from('#card-app', { opacity:0, y:60, scale:0.92, duration:1.1, ease:'back.out(1.4)', delay:0.3,
+  scrollTrigger:{ trigger:'#cards', start:'top 85%', once:true } });
 
 /* ─── PLAYBOOK ────────────────────────────────────────────── */
-gsap.set('.playbook-header .authority-pill', { opacity:0, y:-30, scale:0.6 });
-gsap.set('.playbook-header .section-h2',     { opacity:0, y:65, skewX:-6 });
-gsap.set('.playbook-subtitle',               { opacity:0, y:28 });
-gsap.timeline({ scrollTrigger:{ trigger:'#playbook', start:'top 85%', once:true } })
-  .to('.playbook-header .authority-pill', { opacity:1, y:0, scale:1, duration:0.65, ease:'back.out(2.5)' })
-  .to('.playbook-header .section-h2',     { opacity:1, y:0, skewX:0, duration:0.95, ease:'power3.out' }, '-=0.35')
-  .to('.playbook-subtitle',               { opacity:1, y:0, duration:0.7, ease:'power3.out' }, '-=0.5');
+gsap.from('.playbook-header .authority-pill', { opacity:0, y:-20, scale:0.7, duration:0.6, ease:'back.out(2)',
+  scrollTrigger:{ trigger:'#playbook', start:'top 85%', once:true } });
+gsap.from('.playbook-header .section-h2', { opacity:0, y:50, duration:0.9, ease:'power3.out', delay:0.15,
+  scrollTrigger:{ trigger:'#playbook', start:'top 85%', once:true } });
+gsap.from('.playbook-subtitle', { opacity:0, y:25, duration:0.7, ease:'power3.out', delay:0.3,
+  scrollTrigger:{ trigger:'#playbook', start:'top 85%', once:true } });
 
 /* ─── DO / DON'T ─────────────────────────────────────────── */
-gsap.set('.do-col .rules-col-pill',    { opacity:0, x:-70 });
-gsap.set('.do-col .rules-col-title',   { opacity:0, x:-70 });
-gsap.set('.dont-col .rules-col-pill',  { opacity:0, x:70 });
-gsap.set('.dont-col .rules-col-title', { opacity:0, x:70 });
-gsap.set('.do-col .rule-item',         { opacity:0, x:-50 });
-gsap.set('.dont-col .rule-item',       { opacity:0, x:50 });
-gsap.timeline({ scrollTrigger:{ trigger:'.rules-grid', start:'top 85%', once:true } })
-  .to('.do-col .rules-col-pill',    { opacity:1, x:0, duration:0.7, ease:'power3.out' })
-  .to('.do-col .rules-col-title',   { opacity:1, x:0, duration:0.7, ease:'power3.out' }, '-=0.5')
-  .to('.dont-col .rules-col-pill',  { opacity:1, x:0, duration:0.7, ease:'power3.out' }, '<')
-  .to('.dont-col .rules-col-title', { opacity:1, x:0, duration:0.7, ease:'power3.out' }, '-=0.5')
-  .to('.do-col .rule-item',   { opacity:1, x:0, stagger:0.08, duration:0.55, ease:'power3.out' }, '-=0.3')
-  .to('.dont-col .rule-item', { opacity:1, x:0, stagger:0.08, duration:0.55, ease:'power3.out' }, '<');
+gsap.from(['.do-col .rules-col-pill','.do-col .rules-col-title'], { opacity:0, x:-60, duration:0.7, ease:'power3.out',
+  scrollTrigger:{ trigger:'.rules-grid', start:'top 85%', once:true } });
+gsap.from(['.dont-col .rules-col-pill','.dont-col .rules-col-title'], { opacity:0, x:60, duration:0.7, ease:'power3.out',
+  scrollTrigger:{ trigger:'.rules-grid', start:'top 85%', once:true } });
+gsap.from('.do-col .rule-item', { opacity:0, x:-40, stagger:0.08, duration:0.6, ease:'power3.out', delay:0.2,
+  scrollTrigger:{ trigger:'.rules-grid', start:'top 85%', once:true } });
+gsap.from('.dont-col .rule-item', { opacity:0, x:40, stagger:0.08, duration:0.6, ease:'power3.out', delay:0.2,
+  scrollTrigger:{ trigger:'.rules-grid', start:'top 85%', once:true } });
 
 /* ─── PLAYBOOK GALLERY SLIDER ────────────────────────── */
 (function(){
@@ -2273,11 +2268,10 @@ gsap.timeline({ scrollTrigger:{ trigger:'.rules-grid', start:'top 85%', once:tru
 })();
 
 /* ─── SCENARIO ───────────────────────────────────────────── */
-gsap.set('.scenario-header-centered', { opacity:0, y:65, skewX:-5 });
-gsap.set('#scenario-app',             { opacity:0, y:90, scale:0.93 });
-gsap.timeline({ scrollTrigger:{ trigger:'#scenario', start:'top 85%', once:true } })
-  .to('.scenario-header-centered', { opacity:1, y:0, skewX:0, duration:0.95, ease:'power3.out' })
-  .to('#scenario-app',             { opacity:1, y:0, scale:1, duration:1.15, ease:'back.out(1.4)' }, '-=0.5');
+gsap.from('.scenario-header-centered', { opacity:0, y:50, duration:0.9, ease:'power3.out',
+  scrollTrigger:{ trigger:'#scenario', start:'top 85%', once:true } });
+gsap.from('#scenario-app', { opacity:0, y:60, scale:0.94, duration:1.1, ease:'back.out(1.4)', delay:0.2,
+  scrollTrigger:{ trigger:'#scenario', start:'top 85%', once:true } });
 
 /* ─── CASES: SCROLL PIN + DRAG (desktop) / ARROWS (mobile) ── */
 const casesSection = document.getElementById('cases-section');
@@ -2315,13 +2309,12 @@ if (window.innerWidth > 900) {
       onDrag() { window.scrollTo(0, dragStartScroll + (this.startX - this.x)); }
     });
 
-    gsap.set('#cases-pin .section-label', { opacity:0, x:-55 });
-    gsap.set('#cases-pin .section-h2',    { opacity:0, x:-80, skewX:-6 });
-    gsap.set('.cases-scroll-hint',        { opacity:0, x:-28 });
-    gsap.timeline({ scrollTrigger:{ trigger:casesSection, start:'top 85%', once:true } })
-      .to('#cases-pin .section-label', { opacity:1, x:0, duration:0.6, ease:'power3.out' })
-      .to('#cases-pin .section-h2',    { opacity:1, x:0, skewX:0, duration:0.95, ease:'power3.out' }, '-=0.4')
-      .to('.cases-scroll-hint',        { opacity:1, x:0, duration:0.6, ease:'power3.out' }, '-=0.3');
+    gsap.from('#cases-pin .section-label', { opacity:0, x:-40, duration:0.6, ease:'power3.out',
+      scrollTrigger:{ trigger:casesSection, start:'top 85%', once:true } });
+    gsap.from('#cases-pin .section-h2', { opacity:0, x:-60, duration:0.9, ease:'power3.out', delay:0.15,
+      scrollTrigger:{ trigger:casesSection, start:'top 85%', once:true } });
+    gsap.from('.cases-scroll-hint', { opacity:0, x:-25, duration:0.6, ease:'power3.out', delay:0.3,
+      scrollTrigger:{ trigger:casesSection, start:'top 85%', once:true } });
   }, 600);
 
 } else {
@@ -2361,15 +2354,14 @@ if (window.innerWidth > 900) {
 }
 
 /* ─── AUTHORITY ──────────────────────────────────────────── */
-gsap.set('.authority-photo-wrap', { opacity:0, x:-90, rotation:-3 });
-gsap.set('.authority-accent',     { opacity:0, scale:0 });
-gsap.set('#authority .section-h2',{ opacity:0, y:50, skewX:-5 });
-gsap.set('#authority p',          { opacity:0, y:28 });
-gsap.timeline({ scrollTrigger:{ trigger:'#authority', start:'top 85%', once:true } })
-  .to('.authority-photo-wrap', { opacity:1, x:0, rotation:0, duration:1.1, ease:'power3.out' })
-  .to('.authority-accent',     { opacity:1, scale:1, duration:0.8, ease:'back.out(1.6)' }, '-=0.8')
-  .to('#authority .section-h2',{ opacity:1, y:0, skewX:0, duration:0.95, ease:'power3.out' }, '-=0.7')
-  .to('#authority p',          { opacity:1, y:0, stagger:0.12, duration:0.7, ease:'power3.out' }, '-=0.55');
+gsap.from('.authority-photo-wrap', { opacity:0, x:-70, duration:1.0, ease:'power3.out',
+  scrollTrigger:{ trigger:'#authority', start:'top 85%', once:true } });
+gsap.from('.authority-accent', { opacity:0, scale:0, duration:0.7, ease:'back.out(1.8)', delay:0.1,
+  scrollTrigger:{ trigger:'#authority', start:'top 85%', once:true } });
+gsap.from('#authority .section-h2', { opacity:0, y:40, duration:0.9, ease:'power3.out', delay:0.2,
+  scrollTrigger:{ trigger:'#authority', start:'top 85%', once:true } });
+gsap.from('#authority p', { opacity:0, y:25, stagger:0.1, duration:0.7, ease:'power3.out', delay:0.3,
+  scrollTrigger:{ trigger:'#authority', start:'top 85%', once:true } });
 
 /* Stats count-up */
 gsap.utils.toArray('.stat-num').forEach(el => {
@@ -2386,25 +2378,22 @@ gsap.utils.toArray('.stat-num').forEach(el => {
   }
 });
 
-gsap.set('.trust-badge', { opacity:0, x:55 });
-gsap.set('.stat-item',   { opacity:0, y:40 });
-gsap.to('.trust-badge', { opacity:1, x:0, stagger:0.12, duration:0.7, ease:'back.out(1.4)',
+gsap.from('.trust-badge', { opacity:0, x:40, stagger:0.1, duration:0.6, ease:'back.out(1.4)',
   scrollTrigger:{ trigger:'.trust-badges', start:'top 85%', once:true } });
-gsap.to('.stat-item', { opacity:1, y:0, stagger:0.1, duration:0.7, ease:'power3.out',
+gsap.from('.stat-item', { opacity:0, y:35, stagger:0.08, duration:0.6, ease:'power3.out',
   scrollTrigger:{ trigger:'.stats-row', start:'top 85%', once:true } });
 
 /* ─── CTA ────────────────────────────────────────────────── */
-gsap.set('.cta-badge', { opacity:0, y:-35, scale:0.65 });
-gsap.set('.cta-h2',    { opacity:0, y:75, skewX:-6 });
-gsap.set('.cta-sub',   { opacity:0, y:38 });
-gsap.set('.cta-btns',  { opacity:0, y:32, scale:0.88 });
-gsap.set('.cta-free',  { opacity:0 });
-gsap.timeline({ scrollTrigger:{ trigger:'#cta', start:'top 85%', once:true } })
-  .to('.cta-badge', { opacity:1, y:0, scale:1, duration:0.65, ease:'back.out(2.8)' })
-  .to('.cta-h2',    { opacity:1, y:0, skewX:0, duration:1.05, ease:'power3.out' }, '-=0.25')
-  .to('.cta-sub',   { opacity:1, y:0, stagger:0.15, duration:0.8, ease:'power3.out' }, '-=0.5')
-  .to('.cta-btns',  { opacity:1, y:0, scale:1, duration:0.75, ease:'back.out(2)' }, '-=0.3')
-  .to('.cta-free',  { opacity:1, duration:0.5 }, '-=0.2');
+gsap.from('.cta-badge', { opacity:0, y:-25, scale:0.7, duration:0.6, ease:'back.out(2.5)',
+  scrollTrigger:{ trigger:'#cta', start:'top 85%', once:true } });
+gsap.from('.cta-h2', { opacity:0, y:50, duration:1.0, ease:'power3.out', delay:0.1,
+  scrollTrigger:{ trigger:'#cta', start:'top 85%', once:true } });
+gsap.from('.cta-sub', { opacity:0, y:30, stagger:0.12, duration:0.8, ease:'power3.out', delay:0.25,
+  scrollTrigger:{ trigger:'#cta', start:'top 85%', once:true } });
+gsap.from('.cta-btns', { opacity:0, y:25, scale:0.9, duration:0.7, ease:'back.out(1.8)', delay:0.4,
+  scrollTrigger:{ trigger:'#cta', start:'top 85%', once:true } });
+gsap.from('.cta-free', { opacity:0, duration:0.5, delay:0.55,
+  scrollTrigger:{ trigger:'#cta', start:'top 85%', once:true } });
 
 /* ─── ABOUT JJ SCROLL ─────────────────────────────────────── */
 (function(){
