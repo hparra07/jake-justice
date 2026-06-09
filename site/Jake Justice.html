@@ -109,12 +109,11 @@
       box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
     }
 
-    /* HERO STICKER */
+    /* HERO STICKERS */
     .jj-sticker {
       position: absolute;
-      bottom: 72px;
-      left: 72px;
-      width: 88px;
+      top: 0; left: 0;   /* GSAP sets x/y via transform */
+      width: 115px;
       z-index: 8;
       touch-action: none;
       user-select: none;
@@ -125,9 +124,7 @@
       width: 100%;
       height: auto;
       display: block;
-      border-radius: 50%;
-      border: 5px solid #fff;
-      filter: drop-shadow(0 4px 14px rgba(0,0,0,0.30));
+      filter: drop-shadow(2px 5px 8px rgba(0,0,0,0.28));
       pointer-events: none;
       -webkit-user-drag: none;
     }
@@ -824,7 +821,7 @@
 
       /* ── HERO ── */
       #hero { padding: 100px 24px 64px; }
-      .jj-sticker { width: 68px; bottom: 20px; left: 20px; }
+      .jj-sticker { width: 80px; }
       .hero-inner { grid-template-columns: 1fr; gap: 0; text-align: center; }
       .hero-content { display: flex; flex-direction: column; align-items: center; }
       .hero-h1 { text-align: center; }
@@ -992,10 +989,10 @@
       <div class="hero-badge">KNOW YOUR RIGHTS</div>
     </div>
   </div>
-  <!-- Draggable sticker -->
-  <div class="jj-sticker" id="jj-sticker">
-    <img src="../images/jake-justice-avatar-main.png" alt="Jake Justice sticker">
-  </div>
+  <!-- Draggable stickers -->
+  <div class="jj-sticker"><img src="../images/jake-justice-avatar-sticker.png" alt="Jake Justice"></div>
+  <div class="jj-sticker"><img src="../images/rights-sticker.png" alt="Know Your Rights"></div>
+  <div class="jj-sticker"><img src="../images/jake-justice-sticker.png" alt="Jake Justice"></div>
 </section>
 
 <div class="board-divider"></div>
@@ -1922,25 +1919,46 @@ gsap.to('.hero-visual', {
   scrollTrigger:{ trigger:'#hero', start:'top top', end:'bottom top', scrub:1 }
 });
 
-/* ─── HERO STICKER ─────────────────────────────────────── */
+/* ─── HERO STICKERS ─────────────────────────────────────── */
 (function() {
-  var sticker = document.getElementById('jj-sticker');
-  if (!sticker) return;
+  var stickers = gsap.utils.toArray('.jj-sticker');
+  if (!stickers.length) return;
 
-  // Set initial rotation via GSAP so Draggable owns the transform matrix
-  gsap.set(sticker, { rotation: -8 });
+  var hero   = document.getElementById('hero');
+  var topZ   = 10;  // shared z-index counter so last dragged is always on top
 
-  Draggable.create(sticker, {
-    bounds: '#hero',
-    edgeResistance: 0.65,
-    cursor: 'grab',
-    activeCursor: 'grabbing',
-    onPress: function() {
-      gsap.to(sticker, { scale: 1.14, rotation: -4, duration: 0.18, ease: 'power2.out', zIndex: 50 });
-    },
-    onRelease: function() {
-      gsap.to(sticker, { scale: 1, duration: 0.38, ease: 'back.out(1.7)' });
-    }
+  stickers.forEach(function(sticker) {
+    var hw   = hero.offsetWidth;
+    var hh   = hero.offsetHeight;
+    var sw   = sticker.offsetWidth  || 115;
+    var sh   = sticker.offsetHeight || 115;
+    var pad  = 48;
+
+    // Random position scattered across the hero, respecting padding
+    var rx  = pad + Math.random() * (hw - sw - pad * 2);
+    var ry  = pad + Math.random() * (hh - sh - pad * 2);
+    var rot = -18 + Math.random() * 36;   // –18° to +18°
+
+    gsap.set(sticker, { x: rx, y: ry, rotation: rot, zIndex: topZ++ });
+
+    Draggable.create(sticker, {
+      bounds: '#hero',
+      edgeResistance: 0.65,
+      cursor: 'grab',
+      activeCursor: 'grabbing',
+      onPress: function() {
+        topZ++;
+        gsap.to(sticker, {
+          scale: 1.12,
+          zIndex: topZ,
+          duration: 0.18,
+          ease: 'power2.out'
+        });
+      },
+      onRelease: function() {
+        gsap.to(sticker, { scale: 1, duration: 0.38, ease: 'back.out(1.7)' });
+      }
+    });
   });
 })();
 
