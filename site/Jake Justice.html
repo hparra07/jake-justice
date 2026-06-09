@@ -114,20 +114,21 @@
       position: absolute;
       bottom: 72px;
       left: 72px;
-      width: 88px;
+      width: 130px;
       z-index: 8;
       touch-action: none;
       user-select: none;
       will-change: transform;
       -webkit-user-drag: none;
+      /* resting shadow — the drop-shadow here follows the outlined shape */
+      filter: drop-shadow(2px 5px 8px rgba(0,0,0,0.28));
     }
     .jj-sticker img {
       width: 100%;
       height: auto;
       display: block;
-      border-radius: 50%;
-      border: 5px solid #fff;
-      filter: drop-shadow(0 4px 14px rgba(0,0,0,0.30));
+      /* SVG filter: dilates the alpha channel outward → white border follows PNG silhouette */
+      filter: url(#sticker-outline);
       pointer-events: none;
       -webkit-user-drag: none;
     }
@@ -824,7 +825,7 @@
 
       /* ── HERO ── */
       #hero { padding: 100px 24px 64px; }
-      .jj-sticker { width: 68px; bottom: 20px; left: 20px; }
+      .jj-sticker { width: 90px; bottom: 20px; left: 20px; }
       .hero-inner { grid-template-columns: 1fr; gap: 0; text-align: center; }
       .hero-content { display: flex; flex-direction: column; align-items: center; }
       .hero-h1 { text-align: center; }
@@ -924,6 +925,23 @@
   </svg>
 </head>
 <body>
+<!-- SVG filter defs (hidden) -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none;position:absolute;width:0;height:0" aria-hidden="true">
+  <defs>
+    <filter id="sticker-outline" color-interpolation-filters="sRGB" x="-18%" y="-18%" width="136%" height="136%">
+      <!-- Expand the alpha channel outward to create the sticker border shape -->
+      <feMorphology in="SourceAlpha" operator="dilate" radius="11" result="expanded"/>
+      <!-- Fill the expanded shape with white -->
+      <feFlood flood-color="#ffffff" result="white-fill"/>
+      <feComposite in="white-fill" in2="expanded" operator="in" result="outline"/>
+      <!-- Stack: white border behind, original image on top -->
+      <feMerge>
+        <feMergeNode in="outline"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+</svg>
 
 <!-- NAV -->
 <nav>
@@ -1936,10 +1954,25 @@ gsap.to('.hero-visual', {
     cursor: 'grab',
     activeCursor: 'grabbing',
     onPress: function() {
-      gsap.to(sticker, { scale: 1.14, rotation: -4, duration: 0.18, ease: 'power2.out', zIndex: 50 });
+      gsap.to(sticker, {
+        scale: 1.13,
+        rotation: -4,
+        y: -8,
+        /* deeper offset shadow = sticker lifting off the surface in 3D */
+        filter: 'drop-shadow(8px 16px 20px rgba(0,0,0,0.52))',
+        duration: 0.2,
+        ease: 'power2.out',
+        zIndex: 50
+      });
     },
     onRelease: function() {
-      gsap.to(sticker, { scale: 1, duration: 0.38, ease: 'back.out(1.7)' });
+      gsap.to(sticker, {
+        scale: 1,
+        y: 0,
+        filter: 'drop-shadow(2px 5px 8px rgba(0,0,0,0.28))',
+        duration: 0.45,
+        ease: 'back.out(1.7)'
+      });
     }
   });
 })();
