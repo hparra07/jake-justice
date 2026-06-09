@@ -109,11 +109,11 @@
       box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
     }
 
-    /* HERO STICKERS */
+    /* STICKERS */
     .jj-sticker {
       position: absolute;
       top: 0; left: 0;   /* GSAP sets x/y via transform */
-      width: 115px;
+      width: 145px;
       z-index: 8;
       touch-action: none;
       user-select: none;
@@ -124,7 +124,6 @@
       width: 100%;
       height: auto;
       display: block;
-      filter: drop-shadow(2px 5px 8px rgba(0,0,0,0.28));
       pointer-events: none;
       -webkit-user-drag: none;
     }
@@ -440,7 +439,7 @@
 
 
     /* AUTHORITY */
-    #authority { background: var(--blue); padding: 0; }
+    #authority { background: var(--blue); padding: 0; position: relative; overflow: hidden; }
     .authority-inner { display: grid; grid-template-columns: 580px 1fr; gap: 60px; align-items: stretch; max-width: 1600px; margin: 0 auto; padding: 80px 60px; }
     #authority .section-h2 { font-size: clamp(27px, 4vw, 64px); }
     .authority-photo-wrap { position: relative; overflow: hidden; border: 10px solid var(--red); }
@@ -821,7 +820,7 @@
 
       /* ── HERO ── */
       #hero { padding: 100px 24px 64px; }
-      .jj-sticker { width: 80px; }
+      .jj-sticker { width: 95px; }
       .hero-inner { grid-template-columns: 1fr; gap: 0; text-align: center; }
       .hero-content { display: flex; flex-direction: column; align-items: center; }
       .hero-h1 { text-align: center; }
@@ -989,10 +988,6 @@
       <div class="hero-badge">KNOW YOUR RIGHTS</div>
     </div>
   </div>
-  <!-- Draggable stickers -->
-  <div class="jj-sticker"><img src="../images/jake-justice-avatar-sticker.png" alt="Jake Justice"></div>
-  <div class="jj-sticker"><img src="../images/rights-sticker.png" alt="Know Your Rights"></div>
-  <div class="jj-sticker"><img src="../images/jake-justice-sticker.png" alt="Jake Justice"></div>
 </section>
 
 <div class="board-divider"></div>
@@ -1310,6 +1305,10 @@
       </div>
     </div>
   </div>
+  <!-- Draggable stickers -->
+  <div class="jj-sticker"><img src="../images/jake-justice-avatar-sticker.png" alt="Jake Justice"></div>
+  <div class="jj-sticker"><img src="../images/rights-sticker.png" alt="Know Your Rights"></div>
+  <div class="jj-sticker"><img src="../images/jake-justice-sticker.png" alt="Jake Justice"></div>
 </section>
 
 <div class="board-divider"></div>
@@ -1919,44 +1918,69 @@ gsap.to('.hero-visual', {
   scrollTrigger:{ trigger:'#hero', start:'top top', end:'bottom top', scrub:1 }
 });
 
-/* ─── HERO STICKERS ─────────────────────────────────────── */
+/* ─── AUTHORITY STICKERS ─────────────────────────────────── */
 (function() {
   var stickers = gsap.utils.toArray('.jj-sticker');
   if (!stickers.length) return;
 
-  var hero   = document.getElementById('hero');
-  var topZ   = 10;  // shared z-index counter so last dragged is always on top
+  var section = document.getElementById('authority');
+  var topZ = 10;
 
+  /* Hide before entrance */
+  gsap.set(stickers, { opacity: 0, scale: 0 });
+
+  /* Pop in when section scrolls into view */
+  var io = new IntersectionObserver(function(entries) {
+    if (!entries[0].isIntersecting) return;
+    io.disconnect();
+
+    var sw  = section.offsetWidth;
+    var sh  = section.offsetHeight;
+    var pad = 60;
+
+    stickers.forEach(function(sticker, i) {
+      var size = sticker.offsetWidth || 145;
+      var rx   = pad + Math.random() * (sw - size - pad * 2);
+      var ry   = pad + Math.random() * (sh - size - pad * 2);
+      var rot  = -22 + Math.random() * 44;   /* –22° to +22° */
+
+      gsap.set(sticker, { x: rx, y: ry, rotation: rot, zIndex: topZ++ });
+
+      /* Popup entrance — staggered */
+      gsap.to(sticker, {
+        opacity: 1, scale: 1,
+        duration: 0.7,
+        ease: 'back.out(2.4)',
+        delay: 0.15 + i * 0.2
+      });
+    });
+  }, { threshold: 0.15 });
+
+  io.observe(section);
+
+  /* Draggable + click behaviour */
   stickers.forEach(function(sticker) {
-    var hw   = hero.offsetWidth;
-    var hh   = hero.offsetHeight;
-    var sw   = sticker.offsetWidth  || 115;
-    var sh   = sticker.offsetHeight || 115;
-    var pad  = 48;
-
-    // Random position scattered across the hero, respecting padding
-    var rx  = pad + Math.random() * (hw - sw - pad * 2);
-    var ry  = pad + Math.random() * (hh - sh - pad * 2);
-    var rot = -18 + Math.random() * 36;   // –18° to +18°
-
-    gsap.set(sticker, { x: rx, y: ry, rotation: rot, zIndex: topZ++ });
+    var img = sticker.querySelector('img');
 
     Draggable.create(sticker, {
-      bounds: '#hero',
+      bounds: '#authority',
       edgeResistance: 0.65,
       cursor: 'grab',
       activeCursor: 'grabbing',
       onPress: function() {
-        topZ++;
         gsap.to(sticker, {
-          scale: 1.12,
-          zIndex: topZ,
-          duration: 0.18,
-          ease: 'power2.out'
+          rotation: 0, scale: 1.1,
+          zIndex: ++topZ,
+          duration: 0.22, ease: 'power2.out'
+        });
+        gsap.to(img, {
+          filter: 'drop-shadow(5px 10px 20px rgba(0,0,0,0.55))',
+          duration: 0.2
         });
       },
       onRelease: function() {
-        gsap.to(sticker, { scale: 1, duration: 0.38, ease: 'back.out(1.7)' });
+        gsap.to(sticker, { scale: 1, duration: 0.4, ease: 'back.out(1.6)' });
+        gsap.to(img, { filter: 'none', duration: 0.25 });
       }
     });
   });
