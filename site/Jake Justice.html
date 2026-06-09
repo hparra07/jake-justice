@@ -1947,18 +1947,33 @@ gsap.to('.hero-visual', {
     var py = photoRect.top  - secRect.top;
     var pw = photoRect.width;
     var ph = photoRect.height;
-    var margin = 50;
+
+    /* Anchor points on the photo's edges/corners (as fractions of the box).
+       These hug the border so stickers don't cover his face (center). */
+    var anchors = [
+      { fx: 0.04, fy: 0.55 },  /* left edge, lower */
+      { fx: 0.96, fy: 0.60 },  /* right edge, lower */
+      { fx: 0.50, fy: 0.97 },  /* bottom-center */
+      { fx: 0.08, fy: 0.92 },  /* bottom-left corner */
+      { fx: 0.92, fy: 0.90 },  /* bottom-right corner */
+      { fx: 0.06, fy: 0.16 }   /* upper-left corner */
+    ];
+    /* shuffle so placement varies each load */
+    anchors.sort(function() { return Math.random() - 0.5; });
 
     stickers.forEach(function(sticker, i) {
-      var size  = sticker.offsetWidth || 145;
-      /* Horizontal: from just left of the photo to just past its right edge */
-      var minX = Math.max(10, px - margin);
-      var maxX = px + pw + margin - size;
-      var minY = Math.max(20, py - margin);
-      var maxY = py + ph + margin - size;
-      var rx   = minX + Math.random() * Math.max(0, maxX - minX);
-      var ry   = minY + Math.random() * Math.max(0, maxY - minY);
-      var rot  = -22 + Math.random() * 44;   /* –22° to +22° */
+      var size = sticker.offsetWidth || 145;
+      var a    = anchors[i % anchors.length];
+      /* a little jitter so it never looks perfectly templated */
+      var jx = (Math.random() - 0.5) * 30;
+      var jy = (Math.random() - 0.5) * 30;
+      /* center the sticker on the anchor point */
+      var rx = px + a.fx * pw - size / 2 + jx;
+      var ry = py + a.fy * ph - size / 2 + jy;
+      /* keep it hugging the photo, not drifting into the right-side text */
+      rx = Math.max(px - 40, Math.min(rx, px + pw - size + 40));
+      ry = Math.max(py - 30, Math.min(ry, py + ph - size + 30));
+      var rot = -22 + Math.random() * 44;   /* –22° to +22° */
 
       baseRot.set(sticker, rot);
       gsap.set(sticker, { x: rx, y: ry, rotation: rot, zIndex: topZ++ });
