@@ -120,6 +120,7 @@
       will-change: transform;
       -webkit-user-drag: none;
     }
+    .jj-sticker.jj-sticker-lg { width: 215px; }
     .jj-sticker img {
       width: 100%;
       height: auto;
@@ -821,6 +822,7 @@
       /* ── HERO ── */
       #hero { padding: 100px 24px 64px; }
       .jj-sticker { width: 95px; }
+      .jj-sticker.jj-sticker-lg { width: 140px; }
       .hero-inner { grid-template-columns: 1fr; gap: 0; text-align: center; }
       .hero-content { display: flex; flex-direction: column; align-items: center; }
       .hero-h1 { text-align: center; }
@@ -1308,7 +1310,7 @@
   <!-- Draggable stickers -->
   <div class="jj-sticker"><img src="../images/jake-justice-avatar-sticker.png" alt="Jake Justice"></div>
   <div class="jj-sticker"><img src="../images/rights-sticker.png" alt="Know Your Rights"></div>
-  <div class="jj-sticker"><img src="../images/jake-justice-sticker.png" alt="Jake Justice"></div>
+  <div class="jj-sticker jj-sticker-lg"><img src="../images/jake-justice-sticker.png" alt="Jake Justice"></div>
 </section>
 
 <div class="board-divider"></div>
@@ -1924,7 +1926,11 @@ gsap.to('.hero-visual', {
   if (!stickers.length) return;
 
   var section = document.getElementById('authority');
+  var photo   = section.querySelector('.authority-photo-wrap');
   var topZ = 10;
+
+  /* Each sticker remembers the random angle it was placed at */
+  var baseRot = new WeakMap();
 
   /* Hide before entrance */
   gsap.set(stickers, { opacity: 0, scale: 0 });
@@ -1934,16 +1940,27 @@ gsap.to('.hero-visual', {
     if (!entries[0].isIntersecting) return;
     io.disconnect();
 
-    var sw  = section.offsetWidth;
-    var sh  = section.offsetHeight;
-    var pad = 60;
+    /* Scatter region = around Jacob's photo (left column), never over the text */
+    var secRect   = section.getBoundingClientRect();
+    var photoRect = photo.getBoundingClientRect();
+    var px = photoRect.left - secRect.left;
+    var py = photoRect.top  - secRect.top;
+    var pw = photoRect.width;
+    var ph = photoRect.height;
+    var margin = 50;
 
     stickers.forEach(function(sticker, i) {
-      var size = sticker.offsetWidth || 145;
-      var rx   = pad + Math.random() * (sw - size - pad * 2);
-      var ry   = pad + Math.random() * (sh - size - pad * 2);
+      var size  = sticker.offsetWidth || 145;
+      /* Horizontal: from just left of the photo to just past its right edge */
+      var minX = Math.max(10, px - margin);
+      var maxX = px + pw + margin - size;
+      var minY = Math.max(20, py - margin);
+      var maxY = py + ph + margin - size;
+      var rx   = minX + Math.random() * Math.max(0, maxX - minX);
+      var ry   = minY + Math.random() * Math.max(0, maxY - minY);
       var rot  = -22 + Math.random() * 44;   /* –22° to +22° */
 
+      baseRot.set(sticker, rot);
       gsap.set(sticker, { x: rx, y: ry, rotation: rot, zIndex: topZ++ });
 
       /* Popup entrance — staggered */
@@ -1968,6 +1985,7 @@ gsap.to('.hero-visual', {
       cursor: 'grab',
       activeCursor: 'grabbing',
       onPress: function() {
+        /* Straighten + lift while held */
         gsap.to(sticker, {
           rotation: 0, scale: 1.1,
           zIndex: ++topZ,
@@ -1979,7 +1997,9 @@ gsap.to('.hero-visual', {
         });
       },
       onRelease: function() {
-        gsap.to(sticker, { scale: 1, duration: 0.4, ease: 'back.out(1.6)' });
+        /* Rotate back to its original tilt + drop the shadow */
+        var rot = baseRot.get(sticker) || 0;
+        gsap.to(sticker, { rotation: rot, scale: 1, duration: 0.45, ease: 'back.out(1.6)' });
         gsap.to(img, { filter: 'none', duration: 0.25 });
       }
     });
