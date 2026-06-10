@@ -430,7 +430,23 @@
     /* DO/DON'T */
     #rules { padding: 0; }
     .rules-grid { display: grid; grid-template-columns: 1fr 1fr; min-height: 620px; }
-    .rules-col { padding: 80px; }
+    .rules-col { padding: 80px; position: relative; }
+    /* Draggable sticker beside each column title */
+    .rules-sticker {
+      position: absolute;
+      top: 150px; right: 9%;
+      width: 130px;
+      z-index: 5;
+      touch-action: none;
+      user-select: none;
+      will-change: transform;
+      -webkit-user-drag: none;
+    }
+    .rules-sticker img {
+      width: 100%; height: auto; display: block;
+      pointer-events: none;
+      -webkit-user-drag: none;
+    }
     .rules-col.do-col { background: var(--blue); }
     .rules-col.dont-col { background: var(--red); }
     .rules-col-pill {
@@ -894,6 +910,7 @@
       /* ── DO & DON'T ── */
       .rules-grid { grid-template-columns: 1fr; }
       .rules-col { padding: 56px 24px; text-align: center; }
+      .rules-sticker { width: 90px; top: 110px; right: 10px; }
       .rules-col-pill { display: table; margin-left: auto; margin-right: auto; margin-bottom: 24px; }
       .rules-col-title { text-align: center; margin-bottom: 40px; }
       .rule-item { flex-direction: column; align-items: center; text-align: center; gap: 12px; }
@@ -1100,6 +1117,7 @@
     <div class="rules-col do-col">
       <div class="rules-col-pill">What You Must Do</div>
       <div class="rules-col-title">DO THIS.<br>EVERY TIME.</div>
+      <div class="rules-sticker"><img src="../images/checkmark-sticker.png" alt="Do this"></div>
       <div class="rule-item">
         <div class="rule-icon">✓</div>
         <div class="rule-text"><strong>Stay Calm &amp; Compliant Physically</strong><span>Keep your hands visible. Do not resist, even if you believe you're being treated unlawfully.</span></div>
@@ -1124,6 +1142,7 @@
     <div class="rules-col dont-col">
       <div class="rules-col-pill">What You Must Never Do</div>
       <div class="rules-col-title">NEVER<br>DO THIS.</div>
+      <div class="rules-sticker"><img src="../images/stop-sticker.png" alt="Never do this"></div>
       <div class="rule-item">
         <div class="rule-icon">✕</div>
         <div class="rule-text"><strong>Never Consent to a Search</strong><span>Politely say "I do not consent to this search." A warrant is required. Consenting waives your rights.</span></div>
@@ -2065,6 +2084,62 @@ gsap.to('.hero-visual', {
         /* Rotate back to its original tilt + drop the shadow */
         var rot = baseRot.get(sticker) || 0;
         gsap.to(sticker, { rotation: rot, scale: 1, duration: 0.45, ease: 'back.out(1.6)' });
+        gsap.to(img, { filter: 'none', duration: 0.25 });
+      }
+    });
+  });
+})();
+
+/* ─── RULES STICKERS (Do / Don't) ─────────────────────────── */
+(function() {
+  var stickers = gsap.utils.toArray('.rules-sticker');
+  if (!stickers.length) return;
+
+  var topZ = 20;
+  var baseRot = new WeakMap();
+
+  /* Hide before entrance */
+  gsap.set(stickers, { opacity: 0, scale: 0 });
+
+  /* Pop in when the rules section scrolls into view */
+  var io = new IntersectionObserver(function(entries) {
+    if (!entries[0].isIntersecting) return;
+    io.disconnect();
+    stickers.forEach(function(sticker, i) {
+      var rot = 6 + Math.random() * 8;   /* slight tilt to the right */
+      baseRot.set(sticker, rot);
+      gsap.set(sticker, { rotation: rot });
+      gsap.to(sticker, {
+        opacity: 1, scale: 1,
+        duration: 0.7,
+        ease: 'back.out(2.4)',
+        delay: 0.2 + i * 0.25
+      });
+    });
+  }, { threshold: 0.2 });
+  io.observe(document.getElementById('rules'));
+
+  /* Draggable: straighten + lift on press, tilt back on release */
+  stickers.forEach(function(sticker) {
+    var img = sticker.querySelector('img');
+    Draggable.create(sticker, {
+      bounds: '#rules',
+      edgeResistance: 0.65,
+      cursor: 'grab',
+      activeCursor: 'grabbing',
+      onPress: function() {
+        gsap.to(sticker, {
+          rotation: 0, scale: 1.1,
+          zIndex: ++topZ,
+          duration: 0.22, ease: 'power2.out'
+        });
+        gsap.to(img, {
+          filter: 'drop-shadow(5px 10px 20px rgba(0,0,0,0.55))',
+          duration: 0.2
+        });
+      },
+      onRelease: function() {
+        gsap.to(sticker, { rotation: baseRot.get(sticker) || 0, scale: 1, duration: 0.45, ease: 'back.out(1.6)' });
         gsap.to(img, { filter: 'none', duration: 0.25 });
       }
     });
