@@ -607,6 +607,16 @@
     .cases-header .section-h2 { font-size: clamp(36px,5vw,68px); color: var(--blue); }
     .cases-header .section-label { color: var(--red); }
     .cases-track { display: flex; gap: 32px; will-change: transform; }
+    /* Mobile: native scroll-snap slider (class added by JS) */
+    .cases-track.cases-native-scroll {
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      will-change: auto;
+    }
+    .cases-track.cases-native-scroll::-webkit-scrollbar { display: none; }
+    .cases-track.cases-native-scroll .case-card { scroll-snap-align: center; }
     .case-card {
       flex-shrink: 0; width: 480px; height: 520px;
       display: flex; flex-direction: column;
@@ -2064,7 +2074,7 @@ gsap.utils.toArray('.board-divider').forEach(el => {
     if (!el) return;
     var io = new IntersectionObserver(function(entries) {
       if (entries[0].isIntersecting) { io.disconnect(); fn(); }
-    }, { threshold: 0.1 });
+    }, { threshold: 0, rootMargin: '0px 0px -35% 0px' });
     io.observe(el);
   }
 
@@ -2496,7 +2506,7 @@ if (window.innerWidth > 900) {
   }, 600);
 
 } else {
-  /* ── MOBILE: prev/next arrow navigation ── */
+  /* ── MOBILE: native scroll-snap slider (no GSAP transform) ── */
   const cards   = Array.from(casesTrack.querySelectorAll('.case-card'));
   const total   = cards.length;
   const prevBtn = document.getElementById('cases-prev');
@@ -2504,31 +2514,24 @@ if (window.innerWidth > 900) {
   const counter = document.getElementById('cases-counter');
   let current   = 0;
 
-  // Reset any inherited transform and measure real slide distance
-  gsap.set(casesTrack, { x: 0 });
-  // card width + margin-left (24) + margin-right (24) = full slide unit
-  const getSlideW = () => cards[0].offsetWidth + 48;
+  // Kill any inherited transform and switch to native scrolling
+  gsap.set(casesTrack, { clearProps: 'transform' });
+  casesTrack.classList.add('cases-native-scroll');
 
-  prevBtn.disabled = true;
+  // Real distance between two consecutive slides (handles margins/gap)
+  const slideW = () => total > 1 ? cards[1].offsetLeft - cards[0].offsetLeft : cards[0].offsetWidth;
 
-  const goTo = (idx) => {
-    current = Math.max(0, Math.min(total - 1, idx));
-    gsap.to(casesTrack, { x: -current * getSlideW(), duration: 0.45, ease: 'power3.out' });
+  const update = () => {
+    current = Math.max(0, Math.min(total - 1, Math.round(casesTrack.scrollLeft / slideW())));
     counter.textContent = `${current + 1} / ${total}`;
     prevBtn.disabled = current === 0;
     nextBtn.disabled = current === total - 1;
   };
 
-  prevBtn.addEventListener('click', () => goTo(current - 1));
-  nextBtn.addEventListener('click', () => goTo(current + 1));
-
-  /* Swipe support */
-  let touchStartX = 0;
-  casesTrack.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-  casesTrack.addEventListener('touchend',   e => {
-    const diff = touchStartX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) goTo(diff > 0 ? current + 1 : current - 1);
-  });
+  prevBtn.addEventListener('click', () => casesTrack.scrollTo({ left: (current - 1) * slideW(), behavior: 'smooth' }));
+  nextBtn.addEventListener('click', () => casesTrack.scrollTo({ left: (current + 1) * slideW(), behavior: 'smooth' }));
+  casesTrack.addEventListener('scroll', update, { passive: true });
+  update();
 }
 
 /* ─── STATS COUNT-UP ─────────────────────────────────────── */
@@ -2570,7 +2573,7 @@ window.addEventListener('load', function() {
       scrollTrigger: {
         trigger: '#about-jj',
         start: 'top top',
-        end: '+=300vh',
+        end: '+=400vh',
         pin: true,
         anticipatePin: 1,
         scrub: 2,
