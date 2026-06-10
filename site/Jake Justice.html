@@ -848,7 +848,10 @@
       /* ── ABOUT JJ ── */
       #about-jj { height: auto; padding: 64px 24px; display: flex; flex-direction: column; align-items: center; gap: 36px; }
       .about-jj-bg-logo-wrap { display: none; }
-      .about-jj-text-col { order: 1; position: relative; right: auto; top: auto; transform: none; width: 100%; max-width: 100%; }
+      .about-jj-text-col { order: 1; position: relative; right: auto; top: auto; transform: none; width: 100%; max-width: 100%; align-items: center; text-align: center; }
+      .about-jj-eyebrow { align-self: center; }
+      .about-jj-list { width: 100%; align-items: center; }
+      .about-jj-list li { text-align: center; }
       /* Swipeable image gallery below the text (JS moves the imgs in) */
       .about-jj-gallery {
         order: 2; width: 100%;
@@ -860,6 +863,15 @@
         padding: 4px 0;
       }
       .about-jj-gallery::-webkit-scrollbar { display: none; }
+      /* Gallery dots (built by JS) */
+      .about-jj-dots { order: 3; display: flex; gap: 8px; justify-content: center; }
+      .about-jj-dots button {
+        width: 8px; height: 8px; padding: 0;
+        border: none; border-radius: 4px; cursor: pointer;
+        background: rgba(0,82,148,0.25);
+        transition: all .3s;
+      }
+      .about-jj-dots button.active { width: 24px; background: var(--blue); }
       .about-jj-img {
         position: relative; left: auto; top: auto;
         width: 240px; margin: 0; flex-shrink: 0;
@@ -2639,16 +2651,44 @@ window.addEventListener('load', function() {
     gsap.set(jjImgs, { clearProps: 'all' });
     gsap.set('.about-jj-text-col', { opacity: 1 });
 
-    gsap.from('.about-jj-eyebrow', { opacity:0, y:18, duration:0.5, ease:'power3.out',
-      scrollTrigger:{ trigger:'#about-jj', start:'top 80%', once:true } });
-    gsap.from('.about-jj-lead',    { opacity:0, y:22, duration:0.6, ease:'power3.out', delay:0.1,
-      scrollTrigger:{ trigger:'#about-jj', start:'top 80%', once:true } });
-    gsap.from('.about-jj-body',    { opacity:0, y:18, stagger:0.1, duration:0.6, ease:'power3.out', delay:0.2,
-      scrollTrigger:{ trigger:'#about-jj', start:'top 80%', once:true } });
-    gsap.from('.about-jj-list li', { opacity:0, x:-18, stagger:0.08, duration:0.5, ease:'power3.out', delay:0.35,
-      scrollTrigger:{ trigger:'#about-jj', start:'top 80%', once:true } });
-    gsap.from('.about-jj-gallery', { opacity:0, y:30, duration:0.6, ease:'power3.out', delay:0.45,
-      scrollTrigger:{ trigger:'#about-jj', start:'top 80%', once:true } });
+    /* Dots nav */
+    function jjSlideW() {
+      return jjImgs.length > 1 ? jjImgs[1].offsetLeft - jjImgs[0].offsetLeft : jjImgs[0].offsetWidth;
+    }
+    var jjDots = document.createElement('div');
+    jjDots.className = 'about-jj-dots';
+    jjImgs.forEach(function(_, i) {
+      var b = document.createElement('button');
+      b.setAttribute('aria-label', 'Image ' + (i + 1));
+      if (i === 0) b.classList.add('active');
+      b.addEventListener('click', function() {
+        /* exact snap position: image centered in the gallery */
+        var img = jjImgs[i];
+        var left = img.offsetLeft - (jjGallery.clientWidth - img.offsetWidth) / 2;
+        jjGallery.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });
+      });
+      jjDots.appendChild(b);
+    });
+    jjSection.appendChild(jjDots);
+    jjGallery.addEventListener('scroll', function() {
+      var idx = Math.max(0, Math.min(jjImgs.length - 1, Math.round(jjGallery.scrollLeft / jjSlideW())));
+      Array.prototype.forEach.call(jjDots.children, function(b, j) { b.classList.toggle('active', j === idx); });
+    }, { passive: true });
+
+    /* Entrance — IntersectionObserver (gsap.from + ScrollTrigger is unreliable here) */
+    gsap.set(['.about-jj-eyebrow', '.about-jj-lead', '.about-jj-body'], { opacity: 0, y: 18 });
+    gsap.set('.about-jj-list li', { opacity: 0, y: 14 });
+    gsap.set([jjGallery, jjDots], { opacity: 0, y: 30 });
+    var jjIO = new IntersectionObserver(function(entries) {
+      if (!entries[0].isIntersecting) return;
+      jjIO.disconnect();
+      gsap.to('.about-jj-eyebrow', { opacity:1, y:0, duration:0.5, ease:'power3.out' });
+      gsap.to('.about-jj-lead',    { opacity:1, y:0, duration:0.6, ease:'power3.out', delay:0.1 });
+      gsap.to('.about-jj-body',    { opacity:1, y:0, stagger:0.1, duration:0.6, ease:'power3.out', delay:0.2 });
+      gsap.to('.about-jj-list li', { opacity:1, y:0, stagger:0.08, duration:0.5, ease:'power3.out', delay:0.35 });
+      gsap.to([jjGallery, jjDots], { opacity:1, y:0, duration:0.6, ease:'power3.out', delay:0.45 });
+    }, { threshold: 0.1 });
+    jjIO.observe(jjSection);
   }
 })();
 
