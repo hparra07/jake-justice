@@ -265,6 +265,18 @@
       -webkit-backface-visibility: hidden;
       display: flex; flex-direction: column;
     }
+    /* iOS Safari: children with own stacking context (z-index, filter) escape the
+       parent's backface-visibility — apply it to every descendant too */
+    .card-face * {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    /* Belt and suspenders: swap face visibility at the flip midpoint so the
+       hidden face can never bleed through, regardless of backface support */
+    .card-front { visibility: visible; transition: visibility 0s linear 0.32s; }
+    .card-back  { visibility: hidden;  transition: visibility 0s linear 0.32s; }
+    .card-flip-inner.flipped .card-front { visibility: hidden; }
+    .card-flip-inner.flipped .card-back  { visibility: visible; }
     /* Shared card shell — orange with thick black border + inner border */
     .card-front, .card-back {
       background: #fd935f;
