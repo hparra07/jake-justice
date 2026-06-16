@@ -1787,16 +1787,15 @@ function HeroSlider() {
     const oldImg = imgRefs.current[oldIdx].current;
     const newImg = imgRefs.current[newIdx].current;
 
-    /* Roulette wheel spin — pure rotation, only the image rotates */
+    /* Horizontal slide — new image enters from the side, old exits opposite */
     gsap.set(newImg, {
-      x: 0, y: 0,
-      rotation: dir > 0 ? -180 : 180,
-      scale: 0.7,
-      opacity: 0,
-      zIndex: 4,
-      transformOrigin: 'center center'
+      x: dir > 0 ? '100%' : '-100%',
+      rotation: 0,
+      scale: 1,
+      opacity: 1,
+      zIndex: 4
     });
-    gsap.set(oldImg, { zIndex: 3, transformOrigin: 'center center' });
+    gsap.set(oldImg, { zIndex: 3 });
 
     const tl = gsap.timeline({
       onComplete: () => {
@@ -1809,23 +1808,19 @@ function HeroSlider() {
       }
     });
 
-    /* old image spins out like a roulette wheel */
+    /* old image slides out to the opposite side */
     tl.to(oldImg, {
-      rotation: dir > 0 ? 180 : -180,
-      scale: 0.7,
-      opacity: 0,
+      x: dir > 0 ? '-100%' : '100%',
       duration: 0.7,
-      ease: 'power2.in'
+      ease: 'power3.inOut'
     }, 0);
 
-    /* new image spins in from the opposite side */
+    /* new image slides in to center */
     tl.to(newImg, {
-      rotation: 0,
-      scale: 1,
-      opacity: 1,
-      duration: 0.85,
-      ease: 'power2.out'
-    }, 0.25);
+      x: 0,
+      duration: 0.7,
+      ease: 'power3.inOut'
+    }, 0);
 
     /* text fades out, content swaps, text fades back in */
     tl.to([titleRef.current, tagRef.current], { opacity:0, duration:0.15, ease:'power2.in' }, 0.3);
