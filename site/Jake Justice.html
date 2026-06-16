@@ -1811,14 +1811,14 @@ function HeroSlider() {
     /* old image slides out to the opposite side */
     tl.to(oldImg, {
       x: dir > 0 ? '-100%' : '100%',
-      duration: 0.7,
+      duration: 1.1,
       ease: 'power3.inOut'
     }, 0);
 
     /* new image slides in to center */
     tl.to(newImg, {
       x: 0,
-      duration: 0.7,
+      duration: 1.1,
       ease: 'power3.inOut'
     }, 0);
 
