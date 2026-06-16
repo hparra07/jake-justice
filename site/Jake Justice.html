@@ -1862,16 +1862,21 @@ function HeroSlider() {
       {/* Overlay: V shapes + caption — fades out/in; never animates position */}
       <div ref={overlayRef} style={{position:'absolute',inset:0,zIndex:5,pointerEvents:'none',opacity:0}}>
 
-        {/* V diagonals */}
+        {/* Bottom diagonals — converge at the center-bottom forming a wide V/valley
+            so the full illustration stays visible above them (Maxima-style frame). */}
         <div ref={diagLRef} style={{
           position:'absolute',inset:0,
           background: SLIDES[0].diagBg,
-          clipPath: window.innerWidth<=660 ? 'polygon(0 50%, 0 100%, 44% 100%)' : 'polygon(0 35%, 0 100%, 44% 100%)'
+          clipPath: window.innerWidth<=660
+            ? 'polygon(0 78%, 0 100%, 50% 100%)'
+            : 'polygon(0 68%, 0 100%, 50% 100%)'
         }}/>
         <div ref={diagRRef} style={{
           position:'absolute',inset:0,
           background: SLIDES[0].diagBg,
-          clipPath: window.innerWidth<=660 ? 'polygon(100% 50%, 100% 100%, 56% 100%)' : 'polygon(100% 35%, 100% 100%, 56% 100%)'
+          clipPath: window.innerWidth<=660
+            ? 'polygon(100% 78%, 100% 100%, 50% 100%)'
+            : 'polygon(100% 68%, 100% 100%, 50% 100%)'
         }}/>
 
         {/* Caption card — fixed color, only text changes */}
