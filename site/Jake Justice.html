@@ -1751,8 +1751,8 @@ scenarioRoot.render(<ScenarioApp />);
 <script type="text/babel">
 
 const SLIDES = [
-  { diagBg:'#231f20', image:'../images/slide-1-blank.jpg', title:'STAY CALM.\nKNOW YOUR\nRIGHTS.', tag:'When Law Enforcement Stops You...' },
-  { diagBg:'#005294', image:'../images/slide-2.png', title:'INVOKE YOUR\nRIGHT TO\nSILENCE.', tag:'5th Amendment' },
+  { diagBg:'#231f20', image:'../images/slide-2.png', title:'STAY CALM.\nKNOW YOUR\nRIGHTS.', tag:'When Law Enforcement Stops You...' },
+  { diagBg:'#005294', image:'../images/slide-1-blank.jpg', title:'INVOKE YOUR\nRIGHT TO\nSILENCE.', tag:'5th Amendment' },
   { diagBg:'#F40026', image:'uploads/panel-3.png', title:'NO CONSENT.\nNO SEARCH.', tag:'4th Amendment' },
   { diagBg:'#231f20', image:'uploads/panel-4.png', title:'AM I FREE\nTO GO?', tag:'Know your status' },
   { diagBg:'#005294', image:'uploads/panel-5.png', title:'DEMAND A\nLAWYER. THEN\nSTOP TALKING.', tag:'6th Amendment' },
@@ -1868,15 +1868,15 @@ function HeroSlider() {
           position:'absolute',inset:0,
           background: SLIDES[0].diagBg,
           clipPath: window.innerWidth<=660
-            ? 'polygon(0 78%, 0 100%, 50% 100%)'
-            : 'polygon(0 68%, 0 100%, 50% 100%)'
+            ? 'polygon(0 65%, 0 100%, 50% 100%)'
+            : 'polygon(0 35%, 0 100%, 50% 100%)'
         }}/>
         <div ref={diagRRef} style={{
           position:'absolute',inset:0,
           background: SLIDES[0].diagBg,
           clipPath: window.innerWidth<=660
-            ? 'polygon(100% 78%, 100% 100%, 50% 100%)'
-            : 'polygon(100% 68%, 100% 100%, 50% 100%)'
+            ? 'polygon(100% 65%, 100% 100%, 50% 100%)'
+            : 'polygon(100% 35%, 100% 100%, 50% 100%)'
         }}/>
 
         {/* Caption card — fixed color, only text changes */}
