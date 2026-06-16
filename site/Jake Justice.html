@@ -1787,39 +1787,45 @@ function HeroSlider() {
     const oldImg = imgRefs.current[oldIdx].current;
     const newImg = imgRefs.current[newIdx].current;
 
+    /* Roulette wheel spin — pure rotation, only the image rotates */
     gsap.set(newImg, {
-      x: dir > 0 ? '100%' : '-100%',
-      rotation: dir > 0 ? 10 : -10,
-      scale: 0.92,
+      x: 0, y: 0,
+      rotation: dir > 0 ? -180 : 180,
+      scale: 0.7,
+      opacity: 0,
       zIndex: 4,
       transformOrigin: 'center center'
     });
-    gsap.set(oldImg, { zIndex: 3 });
+    gsap.set(oldImg, { zIndex: 3, transformOrigin: 'center center' });
 
     const tl = gsap.timeline({
       onComplete: () => {
         SLIDES.forEach((_, i) => {
           if (i !== newIdx) {
-            gsap.set(imgRefs.current[i].current, { x:0, rotation:0, scale:1, opacity:1, zIndex:2 });
+            gsap.set(imgRefs.current[i].current, { x:0, y:0, rotation:0, scale:1, opacity:1, zIndex:2 });
           }
         });
         isAnim.current = false;
       }
     });
 
-    /* old image exits with roulette sweep */
+    /* old image spins out like a roulette wheel */
     tl.to(oldImg, {
-      x: dir > 0 ? '-40%' : '40%',
-      rotation: dir > 0 ? -8 : 8,
-      scale: 0.85,
+      rotation: dir > 0 ? 180 : -180,
+      scale: 0.7,
       opacity: 0,
-      duration: 0.55,
-      ease: 'power3.in',
-      transformOrigin: dir > 0 ? 'right center' : 'left center'
+      duration: 0.7,
+      ease: 'power2.in'
     }, 0);
 
-    /* new image spins in — overlay stays fully visible throughout */
-    tl.to(newImg, { x:0, rotation:0, scale:1, duration:0.7, ease:'power3.out' }, 0.2);
+    /* new image spins in from the opposite side */
+    tl.to(newImg, {
+      rotation: 0,
+      scale: 1,
+      opacity: 1,
+      duration: 0.85,
+      ease: 'power2.out'
+    }, 0.25);
 
     /* text fades out, content swaps, text fades back in */
     tl.to([titleRef.current, tagRef.current], { opacity:0, duration:0.15, ease:'power2.in' }, 0.3);
@@ -1868,20 +1874,20 @@ function HeroSlider() {
           position:'absolute',inset:0,
           background: SLIDES[0].diagBg,
           clipPath: window.innerWidth<=660
-            ? 'polygon(0 65%, 0 100%, 50% 100%)'
-            : 'polygon(0 35%, 0 100%, 50% 100%)'
+            ? 'polygon(0 75%, 0 100%, 50% 100%)'
+            : 'polygon(0 55%, 0 100%, 50% 100%)'
         }}/>
         <div ref={diagRRef} style={{
           position:'absolute',inset:0,
           background: SLIDES[0].diagBg,
           clipPath: window.innerWidth<=660
-            ? 'polygon(100% 65%, 100% 100%, 50% 100%)'
-            : 'polygon(100% 35%, 100% 100%, 50% 100%)'
+            ? 'polygon(100% 75%, 100% 100%, 50% 100%)'
+            : 'polygon(100% 55%, 100% 100%, 50% 100%)'
         }}/>
 
         {/* Caption card — fixed color, only text changes */}
         <div style={{
-          position:'absolute',bottom:'8%',left:'50%',transform:'translateX(-50%)',
+          position:'absolute',bottom:'4%',left:'50%',transform:'translateX(-50%)',
           pointerEvents:'all',
           width:'min(500px,78vw)',textAlign:'center',
           display:'flex',flexDirection:'column'
@@ -1918,7 +1924,7 @@ function HeroSlider() {
         <button key={side} onClick={fn} aria-label={side} style={{
           position:'absolute',
           [side]:'calc(50% - min(250px,39vw) - 72px)',
-          bottom:'calc(8% + 18px)',
+          bottom:'calc(4% + 18px)',
           zIndex:10,width:52,height:52,borderRadius:0,
           background:'#F40026',border:'none',cursor:'pointer',
           display:'flex',alignItems:'center',justifyContent:'center',
@@ -1934,7 +1940,7 @@ function HeroSlider() {
       ))}
 
       {/* Dots + mobile arrows in one row */}
-      <div style={{position:'absolute',bottom:'3.5%',left:'50%',transform:'translateX(-50%)',zIndex:10,display:'flex',alignItems:'center',gap:10}}>
+      <div style={{position:'absolute',bottom:'1.5%',left:'50%',transform:'translateX(-50%)',zIndex:10,display:'flex',alignItems:'center',gap:10}}>
         {window.innerWidth <= 660 && (
           <button onClick={back} aria-label="left" style={{width:36,height:36,background:'#F40026',border:'none',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:0,flexShrink:0}}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
